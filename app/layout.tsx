@@ -4,7 +4,7 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export metadata = {
+export const metadata: Metadata = {
   title: "保護猫譲渡会",
   description: "新しい家族を待っている猫ちゃんたち",
 };
