@@ -1,23 +1,18 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-cream: #FAF6EE;
-  --color-beige: #FFF8ED;
-  --color-beige-dark: #EFE3CC;
-  --color-sage: #6B9E6B;
-  --color-sage-light: #C4DEC2;
-  --color-sage-dark: #4A7A4A;
-  --color-orange: #E07040;
-  --color-orange-light: #F5A87A;
-  --color-orange-pale: #FDE8D8;
-  --color-brown: #4A3728;
-  --color-brown-light: #7D5A4B;
-
-  --font-sans: var(--font-geist-sans), "Hiragino Kaku Gothic ProN", "Yu Gothic",
-    "Meiryo", sans-serif;
+@layer base {
+  body {
+    @apply bg-ivory text-latte antialiased;
+  }
+  h1, h2, h3 {
+    @apply text-latte;
+  }
 }
 
-body {
-  background-color: var(--color-cream);
-  color: var(--color-brown);
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }

@@ -3,8 +3,6 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "保護猫だより | ホーム",
-  description:
-    "保護猫の譲渡会情報と里親募集中の猫たちをご紹介。あなたと運命の猫との出会いを大切に。",
 };
 
 const featuredCats = [
@@ -14,8 +12,9 @@ const featuredCats = [
     age: "3歳",
     gender: "女の子",
     personality: "甘えん坊",
-    color: "bg-orange-pale",
     emoji: "🧡",
+    from: "from-orange-100",
+    to: "to-peach-light",
   },
   {
     id: 2,
@@ -23,8 +22,9 @@ const featuredCats = [
     age: "1歳",
     gender: "男の子",
     personality: "活発・遊び好き",
-    color: "bg-sage-light",
-    emoji: "💚",
+    emoji: "💙",
+    from: "from-sky-100",
+    to: "to-sage-light",
   },
   {
     id: 3,
@@ -32,200 +32,213 @@ const featuredCats = [
     age: "5歳",
     gender: "女の子",
     personality: "穏やか・おっとり",
-    color: "bg-beige-dark",
     emoji: "🤍",
+    from: "from-blue-50",
+    to: "to-paw-light",
   },
 ];
 
-const processSteps = [
-  { step: "01", label: "お問い合わせ", icon: "✉️" },
-  { step: "02", label: "事前審査", icon: "📋" },
-  { step: "03", label: "譲渡会参加", icon: "🐾" },
-  { step: "04", label: "トライアル", icon: "🏠" },
-  { step: "05", label: "正式譲渡", icon: "💕" },
+const steps = [
+  { icon: "✉️", label: "お問い合わせ", step: "01" },
+  { icon: "📋", label: "事前審査", step: "02" },
+  { icon: "🐾", label: "譲渡会参加", step: "03" },
+  { icon: "🏠", label: "トライアル", step: "04" },
+  { icon: "💕", label: "正式譲渡", step: "05" },
 ];
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-sage-light py-20 px-4 text-center">
-        <div className="max-w-2xl mx-auto">
-          <p className="text-5xl mb-4">🐱</p>
-          <h1 className="text-3xl md:text-4xl font-bold text-brown leading-tight mb-4">
-            あなたを待っている
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-peach-pale via-ivory to-paw-light py-24 md:py-36">
+        {/* Decorative floating paw prints */}
+        <span className="absolute top-6 left-6 text-5xl opacity-10 rotate-12">🐾</span>
+        <span className="absolute top-16 right-10 text-7xl opacity-10 -rotate-12">🐾</span>
+        <span className="absolute bottom-10 left-20 text-4xl opacity-10 rotate-6">🐾</span>
+        <span className="absolute bottom-6 right-24 text-3xl opacity-10 -rotate-6">🐾</span>
+
+        <div className="relative max-w-3xl mx-auto px-4 text-center">
+          <div className="text-8xl md:text-9xl mb-8 animate-float inline-block">🐱</div>
+          <h1 className="text-3xl md:text-5xl font-bold text-latte leading-tight mb-5">
+            あなたと出会うのを
             <br />
-            猫がいます。
+            <span className="text-peach">待っている猫がいます。</span>
           </h1>
-          <p className="text-brown-light text-lg mb-8 leading-relaxed">
+          <p className="text-latte-light text-base md:text-lg mb-10 leading-relaxed max-w-md mx-auto">
             保護猫だよりは、保護された猫たちが新しい家族と
             <br className="hidden sm:block" />
-            出会えるよう活動している団体です。
+            出会えるよう活動しています。
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/cats"
-              className="inline-block bg-orange text-white font-bold px-8 py-3 rounded-full hover:bg-orange-light transition-colors"
+              className="inline-flex items-center gap-2 bg-peach text-white font-bold px-8 py-3.5 rounded-full shadow-md hover:bg-peach-dark hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200"
             >
-              猫を探す
+              🐾 猫を探す
             </Link>
             <Link
               href="/events"
-              className="inline-block bg-white text-sage-dark font-bold px-8 py-3 rounded-full border-2 border-sage hover:bg-beige transition-colors"
+              className="inline-flex items-center gap-2 bg-white text-caramel font-bold px-8 py-3.5 rounded-full border-2 border-caramel-light shadow-sm hover:bg-caramel-light hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
             >
-              次回の譲渡会を見る
+              📅 次回の譲渡会を見る
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-12 px-4 bg-beige">
-        <div className="max-w-3xl mx-auto grid grid-cols-3 gap-4 text-center">
+      {/* ── Stats ── */}
+      <section className="bg-white py-10 px-4 shadow-inner">
+        <div className="max-w-3xl mx-auto grid grid-cols-3 divide-x divide-caramel-light text-center">
           {[
-            { value: "230+", label: "保護した猫の数" },
-            { value: "180+", label: "譲渡した猫の数" },
-            { value: "3年", label: "活動年数" },
-          ].map(({ value, label }) => (
-            <div key={label} className="py-4">
-              <p className="text-3xl font-bold text-sage">{value}</p>
-              <p className="text-sm text-brown-light mt-1">{label}</p>
+            { value: "230+", label: "保護した猫", icon: "🐱" },
+            { value: "180+", label: "新しい家族へ", icon: "🏠" },
+            { value: "3年", label: "活動実績", icon: "💕" },
+          ].map(({ value, label, icon }) => (
+            <div key={label} className="py-4 px-2">
+              <div className="text-2xl mb-1">{icon}</div>
+              <p className="text-2xl md:text-3xl font-bold text-peach">{value}</p>
+              <p className="text-xs text-latte-light mt-0.5">{label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Next event */}
+      {/* ── Next Event ── */}
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-brown mb-6 text-center">
-            次回の譲渡会
-          </h2>
-          <div className="bg-beige border border-beige-dark rounded-2xl p-6 flex flex-col sm:flex-row gap-6 items-center">
-            <div className="text-center bg-orange text-white rounded-xl px-6 py-4 min-w-[120px]">
-              <p className="text-xs font-semibold">2026年</p>
-              <p className="text-4xl font-bold leading-none">7/12</p>
-              <p className="text-sm mt-1">日曜日</p>
-            </div>
-            <div className="flex-1 text-center sm:text-left">
-              <p className="font-bold text-lg text-brown">
-                第34回 保護猫譲渡会
-              </p>
-              <p className="text-brown-light mt-1">🕙 10:00〜16:00</p>
-              <p className="text-brown-light">
-                📍 ○○コミュニティセンター 第1会議室
-              </p>
-              <Link
-                href="/events"
-                className="inline-block mt-3 text-sm font-semibold text-sage hover:text-sage-dark transition-colors"
-              >
-                詳細を見る →
-              </Link>
+          <div className="flex items-center gap-2 mb-6">
+            <span className="text-2xl">📅</span>
+            <h2 className="text-2xl font-bold text-latte">次回の譲渡会</h2>
+          </div>
+          <div className="bg-white rounded-3xl shadow-md overflow-hidden border border-caramel-light hover:shadow-lg transition-shadow">
+            <div className="bg-gradient-to-r from-peach to-peach-dark h-2" />
+            <div className="p-6 flex flex-col sm:flex-row gap-6 items-center">
+              <div className="text-center bg-peach text-white rounded-2xl px-6 py-5 min-w-[110px] shadow">
+                <p className="text-xs font-semibold opacity-80">2026年</p>
+                <p className="text-5xl font-bold leading-none my-1">7/12</p>
+                <p className="text-sm">日曜日</p>
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <span className="inline-block bg-peach-pale text-peach text-xs font-bold px-3 py-1 rounded-full mb-2">
+                  次回開催
+                </span>
+                <p className="font-bold text-xl text-latte mb-2">第34回 保護猫譲渡会</p>
+                <p className="text-latte-light text-sm flex items-center gap-1.5 justify-center sm:justify-start">
+                  🕙 10:00〜16:00
+                </p>
+                <p className="text-latte-light text-sm flex items-center gap-1.5 justify-center sm:justify-start mt-0.5">
+                  📍 ○○コミュニティセンター 第1会議室
+                </p>
+                <Link
+                  href="/events"
+                  className="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-peach hover:text-peach-dark transition-colors"
+                >
+                  詳細を見る <span>→</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Featured cats */}
-      <section className="py-16 px-4 bg-cream">
+      {/* ── Featured Cats ── */}
+      <section className="py-16 px-4 bg-peach-pale">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-brown mb-2 text-center">
-            里親募集中の猫たち
-          </h2>
-          <p className="text-center text-brown-light text-sm mb-8">
-            一緒に暮らす家族を待っています
-          </p>
+          <div className="text-center mb-10">
+            <p className="text-peach font-semibold text-sm mb-1">CATS FOR ADOPTION</p>
+            <h2 className="text-2xl font-bold text-latte">里親を募集中の猫たち</h2>
+            <p className="text-latte-light text-sm mt-2">一緒に暮らす家族を待っています</p>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {featuredCats.map((cat) => (
               <div
                 key={cat.id}
-                className="bg-beige rounded-2xl overflow-hidden border border-beige-dark hover:shadow-md transition-shadow"
+                className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
               >
                 <div
-                  className={`${cat.color} h-40 flex items-center justify-center text-6xl`}
+                  className={`h-44 bg-gradient-to-br ${cat.from} ${cat.to} flex items-center justify-center relative`}
                 >
-                  {cat.emoji}
+                  <span className="text-7xl group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+                    {cat.emoji}
+                  </span>
+                  <span className="absolute bottom-2 right-3 text-xl opacity-20">🐾</span>
+                  <span className="absolute top-3 left-2 text-sm opacity-15">🐾</span>
                 </div>
                 <div className="p-4">
-                  <p className="font-bold text-brown text-lg">{cat.name}</p>
-                  <p className="text-sm text-brown-light">
-                    {cat.age} / {cat.gender}
-                  </p>
-                  <span className="inline-block mt-2 text-xs bg-orange-pale text-orange font-semibold px-2 py-0.5 rounded-full">
+                  <div className="flex items-baseline justify-between mb-1">
+                    <p className="font-bold text-latte text-lg">{cat.name}</p>
+                    <p className="text-xs text-latte-light">{cat.age} / {cat.gender}</p>
+                  </div>
+                  <span className="inline-block bg-paw-light text-paw text-xs font-semibold px-2.5 py-0.5 rounded-full">
                     {cat.personality}
                   </span>
                 </div>
               </div>
             ))}
           </div>
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <Link
               href="/cats"
-              className="inline-block bg-sage text-white font-bold px-8 py-3 rounded-full hover:bg-sage-dark transition-colors"
+              className="inline-flex items-center gap-2 bg-peach text-white font-bold px-8 py-3 rounded-full shadow hover:bg-peach-dark hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
             >
-              すべての猫を見る
+              🐱 すべての猫を見る
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Process overview */}
-      <section className="py-16 px-4 bg-beige">
+      {/* ── Process Overview ── */}
+      <section className="py-16 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-brown mb-2 text-center">
-            譲渡の流れ
-          </h2>
-          <p className="text-center text-brown-light text-sm mb-10">
-            初めての方もご安心ください
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-            {processSteps.map(({ step, label, icon }, index) => (
+          <div className="text-center mb-10">
+            <p className="text-sage font-semibold text-sm mb-1">HOW IT WORKS</p>
+            <h2 className="text-2xl font-bold text-latte">譲渡の流れ</h2>
+            <p className="text-latte-light text-sm mt-2">初めての方もご安心ください</p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+            {steps.map(({ icon, label, step }, index) => (
               <div key={step} className="flex items-center gap-2">
-                <div className="flex flex-col items-center text-center w-20">
-                  <div className="w-12 h-12 rounded-full bg-sage-light flex items-center justify-center text-xl mb-1">
+                <div className="flex flex-col items-center w-20 text-center">
+                  <div className="w-14 h-14 rounded-2xl bg-sage-light flex items-center justify-center text-2xl shadow-sm mb-2">
                     {icon}
                   </div>
-                  <p className="text-xs text-sage font-bold">{step}</p>
-                  <p className="text-xs text-brown leading-tight mt-0.5">
-                    {label}
-                  </p>
+                  <p className="text-xs font-bold text-sage">{step}</p>
+                  <p className="text-xs text-latte leading-tight mt-0.5">{label}</p>
                 </div>
-                {index < processSteps.length - 1 && (
-                  <span className="text-beige-dark font-bold hidden sm:block">
-                    →
+                {index < steps.length - 1 && (
+                  <span className="text-caramel-light text-xl font-bold hidden sm:block pb-4">
+                    ›
                   </span>
                 )}
               </div>
             ))}
           </div>
-          <div className="text-center mt-8">
+          <p className="text-center mt-8">
             <Link
               href="/process"
-              className="inline-block text-sm font-semibold text-sage hover:text-sage-dark transition-colors"
+              className="text-sm font-semibold text-sage hover:text-sage-dark transition-colors"
             >
               詳しく見る →
             </Link>
-          </div>
+          </p>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 px-4 bg-orange-pale text-center">
-        <div className="max-w-xl mx-auto">
-          <p className="text-3xl mb-3">💕</p>
-          <h2 className="text-2xl font-bold text-brown mb-3">
+      {/* ── CTA ── */}
+      <section className="py-16 px-4 bg-gradient-to-br from-paw-light to-peach-pale text-center">
+        <div className="max-w-md mx-auto">
+          <div className="text-5xl mb-4 animate-float inline-block">💕</div>
+          <h2 className="text-2xl font-bold text-latte mb-3">
             ご不明な点はお気軽に
           </h2>
-          <p className="text-brown-light mb-6">
-            猫の里親になることに不安がある方も、
-            <br />
-            まずはお気軽にお問い合わせください。
+          <p className="text-latte-light mb-8 leading-relaxed">
+            里親になることに不安がある方も、まずはお気軽にお問い合わせください。スタッフが丁寧にご案内します。
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-orange text-white font-bold px-10 py-3 rounded-full hover:bg-orange-light transition-colors"
+            className="inline-flex items-center gap-2 bg-latte text-ivory font-bold px-10 py-3.5 rounded-full shadow-md hover:bg-latte-dark hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200"
           >
-            お問い合わせはこちら
+            ✉️ お問い合わせはこちら
           </Link>
         </div>
       </section>

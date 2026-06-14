@@ -10,34 +10,42 @@ const navLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-brown text-beige mt-16">
-      <div className="max-w-5xl mx-auto px-4 py-10">
-        <div className="flex flex-col md:flex-row gap-8 justify-between">
-          <div>
+    <footer className="bg-latte text-ivory mt-20">
+      {/* Wave top */}
+      <div className="h-8 bg-ivory" style={{ clipPath: "ellipse(55% 100% at 50% 0%)" }} />
+
+      <div className="max-w-5xl mx-auto px-4 pt-4 pb-10">
+        <div className="flex flex-col md:flex-row gap-10 justify-between">
+          {/* Brand */}
+          <div className="max-w-xs">
             <div className="flex items-center gap-2 text-xl font-bold mb-3">
               <span>🐱</span>
-              <span>保護猫だより</span>
+              <span className="text-peach-light">保護猫だより</span>
             </div>
-            <p className="text-sm text-beige-dark leading-relaxed max-w-xs">
-              保護猫の新しい家族を探す活動をしています。
-              <br />
-              一匹でも多くの猫が幸せになれるよう、
-              <br />
-              みなさまのご支援をお願いします。
+            <p className="text-sm text-latte-light leading-relaxed">
+              保護された猫たちが新しい家族と出会えるよう活動しています。一匹でも多くの猫が幸せな生活を送れますように。
             </p>
+            <div className="flex gap-3 mt-4 text-xl">
+              <span title="保護猫">🐾</span>
+              <span title="里親">🏠</span>
+              <span title="猫">🐱</span>
+              <span title="愛情">💕</span>
+            </div>
           </div>
 
+          {/* Nav */}
           <div>
-            <p className="text-sm font-semibold mb-3 text-orange-light">
-              サイトマップ
+            <p className="text-xs font-semibold text-peach-light uppercase tracking-wider mb-3">
+              ページ
             </p>
-            <ul className="space-y-1">
+            <ul className="space-y-2">
               {navLinks.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-sm text-beige-dark hover:text-beige transition-colors"
+                    className="text-sm text-latte-light hover:text-ivory transition-colors flex items-center gap-1.5"
                   >
+                    <span className="text-xs text-peach">›</span>
                     {label}
                   </Link>
                 </li>
@@ -45,20 +53,30 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
-            <p className="text-sm font-semibold mb-3 text-orange-light">
+            <p className="text-xs font-semibold text-peach-light uppercase tracking-wider mb-3">
               お問い合わせ
             </p>
-            <ul className="space-y-1 text-sm text-beige-dark">
-              <li>📧 info@hogo-neko.example.jp</li>
-              <li>📞 000-0000-0000</li>
-              <li>🕐 受付時間 10:00〜17:00（土日祝除く）</li>
+            <ul className="space-y-2.5 text-sm text-latte-light">
+              <li className="flex items-start gap-2">
+                <span>📧</span>
+                <span>info@hogo-neko.example.jp</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span>📞</span>
+                <span>000-0000-0000</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span>🕐</span>
+                <span>10:00〜17:00<br />（土日祝除く）</span>
+              </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-brown-light text-center text-xs text-beige-dark">
-          © 2026 保護猫だより. All rights reserved.
+        <div className="mt-10 pt-6 border-t border-latte-light/30 text-center text-xs text-latte-light">
+          © 2026 保護猫だより. All rights reserved. 🐾
         </div>
       </div>
     </footer>
