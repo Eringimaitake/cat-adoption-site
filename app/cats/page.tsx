@@ -80,9 +80,10 @@ export default async function CatsPage() {
             {cats.map((cat) => {
               const { from, to } = getTheme(cat.color_theme);
               return (
-                <div
+                <Link
                   key={cat.id}
-                  className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group border border-caramel-light"
+                  href={`/cats/${cat.id}`}
+                  className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group border border-caramel-light block"
                 >
                   {/* Image / emoji area */}
                   <div
@@ -117,7 +118,7 @@ export default async function CatsPage() {
                       ))}
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
