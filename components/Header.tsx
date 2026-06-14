@@ -6,9 +6,10 @@ import { useState } from "react";
 
 const navLinks = [
   { href: "/", label: "ホーム" },
+  { href: "/guide", label: "ガイド" },
   { href: "/events", label: "譲渡会情報" },
   { href: "/cats", label: "猫を探す" },
-  { href: "/process", label: "譲渡の流れ" },
+  { href: "/qa", label: "Q&A" },
   { href: "/contact", label: "お問い合わせ" },
 ];
 
@@ -16,28 +17,28 @@ export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
     <header className="sticky top-0 z-50 bg-ivory/95 backdrop-blur-sm border-b border-caramel-light shadow-sm">
-      <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 group"
-        >
+        <Link href="/" className="flex items-center gap-2 shrink-0 group">
           <span className="text-2xl group-hover:animate-float-sm transition-all">🐱</span>
-          <span className="font-bold text-xl text-caramel group-hover:text-peach transition-colors">
+          <span className="font-bold text-lg text-caramel group-hover:text-peach transition-colors">
             保護猫だより
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-0.5">
           {navLinks.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                pathname === href
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                isActive(href)
                   ? "bg-peach text-white shadow-sm"
                   : "text-latte-light hover:bg-peach-pale hover:text-peach"
               }`}
@@ -49,7 +50,7 @@ export default function Header() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2 rounded-xl text-latte-light hover:bg-peach-pale transition-colors"
+          className="md:hidden p-2 rounded-xl text-latte-light hover:bg-peach-pale transition-colors shrink-0"
           onClick={() => setMenuOpen((v) => !v)}
           aria-label="メニューを開く"
           aria-expanded={menuOpen}
@@ -73,7 +74,7 @@ export default function Header() {
               href={href}
               onClick={() => setMenuOpen(false)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-medium transition-all ${
-                pathname === href
+                isActive(href)
                   ? "bg-peach text-white"
                   : "text-latte-light hover:bg-peach-pale hover:text-peach"
               }`}
