@@ -12,6 +12,17 @@ export type Cat = {
   color_theme: string
   is_adopted: boolean
   created_at: string
+  // Profile
+  location: string | null
+  breed: string | null
+  // Health
+  has_vaccine: boolean | null
+  is_neutered: boolean | null
+  fiv_status: boolean | null   // true = 陽性, false = 陰性
+  felv_status: boolean | null  // true = 陽性, false = 陰性
+  // Applicant conditions
+  single_applicant_allowed: boolean | null
+  elderly_applicant_allowed: boolean | null
 }
 
 export const supabase = createClient(

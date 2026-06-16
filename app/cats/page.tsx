@@ -29,7 +29,7 @@ function getTheme(key: string): { from: string; to: string } {
 export default async function CatsPage() {
   const { data, error } = await supabase
     .from("cats")
-    .select("id, name, age, gender, description, image_url, tags, emoji, color_theme, is_adopted, created_at")
+    .select("*")
     .eq("is_adopted", false)
     .order("created_at", { ascending: false });
 
