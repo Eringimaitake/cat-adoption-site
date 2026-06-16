@@ -157,8 +157,8 @@ export default async function CatDetailPage({
         </Link>
       </div>
 
-      {/* Photo gallery */}
-      <div className="max-w-2xl mx-auto px-4 mt-4">
+      {/* Photo gallery — wider than content for desktop impact */}
+      <div className="max-w-4xl mx-auto px-4 mt-4">
         <PhotoGallery
           images={images}
           catName={cat.name}

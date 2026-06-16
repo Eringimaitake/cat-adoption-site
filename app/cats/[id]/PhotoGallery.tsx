@@ -23,72 +23,119 @@ type Props = {
 
 export default function PhotoGallery({ images, catName, emoji, colorTheme }: Props) {
   const [current, setCurrent] = useState(0);
+
   const { from, to } = COLOR_THEMES[colorTheme] ?? COLOR_THEMES.orange;
   const hasImages = images.length > 0;
+  const hasMultiple = images.length > 1;
+
+  // Clamp so the index never goes out of bounds if images array is shorter
+  const idx = hasImages ? Math.min(current, images.length - 1) : 0;
 
   return (
     <div className="w-full">
-      {/* Main display */}
+      {/* ── Main viewer ────────────────────────────────────────────── */}
       <div
-        className={`relative h-72 sm:h-96 bg-gradient-to-br ${from} ${to} rounded-3xl overflow-hidden flex items-center justify-center`}
+        className={`
+          relative h-64 sm:h-[26rem] lg:h-[34rem]
+          bg-gradient-to-br ${from} ${to}
+          rounded-3xl overflow-hidden
+          flex items-center justify-center
+          shadow-sm
+        `}
       >
         {hasImages ? (
+          /*
+           * key={idx} causes React to remount the <img> on every index
+           * change, which re-triggers the animate-photo-fade CSS animation
+           * for a smooth cross-fade without external libraries.
+           */
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={images[current]}
-            alt={catName}
-            className="w-full h-full object-cover"
+            key={idx}
+            src={images[idx]}
+            alt={`${catName} ${idx + 1}`}
+            className="w-full h-full object-cover animate-photo-fade"
           />
         ) : (
-          <span className="text-[9rem] drop-shadow select-none">{emoji}</span>
+          /* Emoji fallback when no image_url is stored */
+          <span className="text-[9rem] drop-shadow-lg select-none">{emoji}</span>
         )}
 
-        {/* Prev / Next buttons for multiple images */}
-        {images.length > 1 && (
+        {/* Prev / Next arrows — only rendered for multiple images */}
+        {hasMultiple && (
           <>
             <button
               onClick={() =>
                 setCurrent((c) => (c - 1 + images.length) % images.length)
               }
-              className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/75 hover:bg-white text-latte rounded-full w-10 h-10 flex items-center justify-center text-xl shadow transition-colors"
+              className="
+                absolute left-3 top-1/2 -translate-y-1/2
+                w-10 h-10 rounded-full
+                bg-white/75 hover:bg-white
+                text-latte text-2xl
+                flex items-center justify-center
+                shadow-md transition-colors duration-150
+              "
               aria-label="前の写真"
             >
               ‹
             </button>
             <button
-              onClick={() => setCurrent((c) => (c + 1) % images.length)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/75 hover:bg-white text-latte rounded-full w-10 h-10 flex items-center justify-center text-xl shadow transition-colors"
+              onClick={() =>
+                setCurrent((c) => (c + 1) % images.length)
+              }
+              className="
+                absolute right-3 top-1/2 -translate-y-1/2
+                w-10 h-10 rounded-full
+                bg-white/75 hover:bg-white
+                text-latte text-2xl
+                flex items-center justify-center
+                shadow-md transition-colors duration-150
+              "
               aria-label="次の写真"
             >
               ›
             </button>
-            {/* Dot indicators */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    i === current ? "bg-peach" : "bg-white/60"
-                  }`}
-                  aria-label={`写真 ${i + 1}`}
-                />
-              ))}
-            </div>
           </>
+        )}
+
+        {/* Photo count badge */}
+        {hasMultiple && (
+          <div className="
+            absolute bottom-3 right-3
+            bg-black/40 backdrop-blur-sm
+            text-white text-xs font-medium
+            px-2.5 py-1 rounded-full
+          ">
+            {idx + 1} / {images.length}
+          </div>
         )}
       </div>
 
-      {/* Thumbnail strip — shown only when multiple images */}
-      {images.length > 1 && (
-        <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+      {/* ── Thumbnail strip ─────────────────────────────────────────── */}
+      {/*
+       * Shown only when there are 2+ images.
+       * onMouseEnter switches the main viewer instantly on hover;
+       * onClick works as a fallback for touch/keyboard users.
+       */}
+      {hasMultiple && (
+        <div className="flex gap-2.5 mt-3 overflow-x-auto scrollbar-none pb-1">
           {images.map((src, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              className={`relative flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-colors ${
-                i === current ? "border-peach" : "border-transparent"
-              }`}
+              onMouseEnter={() => setCurrent(i)}
+              aria-label={`写真 ${i + 1}を表示`}
+              className={`
+                flex-shrink-0 rounded-2xl overflow-hidden
+                w-20 h-20 sm:w-24 sm:h-24
+                border-2 transition-all duration-200
+                ${
+                  i === idx
+                    ? "border-peach shadow-md scale-105"
+                    : "border-transparent opacity-60 hover:opacity-100 hover:scale-105 hover:shadow-md"
+                }
+              `}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
