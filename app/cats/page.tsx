@@ -89,9 +89,18 @@ export default async function CatsPage() {
                   <div
                     className={`h-48 bg-gradient-to-br ${from} ${to} flex items-center justify-center relative overflow-hidden`}
                   >
-                    <span className="text-8xl group-hover:scale-110 transition-transform duration-500 drop-shadow">
-                      {cat.emoji}
-                    </span>
+                    {cat.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={cat.image_url}
+                        alt={cat.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <span className="text-8xl group-hover:scale-110 transition-transform duration-500 drop-shadow">
+                        {cat.emoji}
+                      </span>
+                    )}
                     <span className="absolute bottom-2 right-3 text-xl opacity-20">🐾</span>
                     <span className="absolute top-2 left-2 text-base opacity-15 -rotate-12">🐾</span>
                   </div>
