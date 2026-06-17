@@ -23,6 +23,9 @@ export type Cat = {
   // Applicant conditions
   single_applicant_allowed: boolean | null
   elderly_applicant_allowed: boolean | null
+  // Character & backstory
+  personality: string | null
+  rescue_story: string | null
 }
 
 export const supabase = createClient(

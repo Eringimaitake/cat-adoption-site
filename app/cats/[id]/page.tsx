@@ -136,6 +136,8 @@ export default async function CatDetailPage({
   const { from, to } = COLOR_THEMES[cat.color_theme] ?? COLOR_THEMES.orange;
 
   const hasProfile = cat.breed !== null || cat.location !== null;
+  const hasPersonality = !!cat.personality?.trim();
+  const hasRescueStory = !!cat.rescue_story?.trim();
   const hasHealth =
     cat.has_vaccine !== null ||
     cat.is_neutered !== null ||
@@ -213,6 +215,15 @@ export default async function CatDetailPage({
           </SectionCard>
         )}
 
+        {/* ── Personality ── */}
+        {hasPersonality && (
+          <SectionCard title="性格">
+            <p className="px-6 py-5 text-latte text-sm leading-relaxed whitespace-pre-wrap">
+              {cat.personality}
+            </p>
+          </SectionCard>
+        )}
+
         {/* ── Health info ── */}
         {hasHealth && (
           <SectionCard title="健康情報">
@@ -269,6 +280,15 @@ export default async function CatDetailPage({
           <SectionCard title="自己紹介">
             <p className="px-6 py-5 text-latte text-sm leading-relaxed whitespace-pre-wrap">
               {cat.description}
+            </p>
+          </SectionCard>
+        )}
+
+        {/* ── Rescue story ── */}
+        {hasRescueStory && (
+          <SectionCard title="保護の経緯">
+            <p className="px-6 py-5 text-latte text-sm leading-relaxed whitespace-pre-wrap">
+              {cat.rescue_story}
             </p>
           </SectionCard>
         )}
