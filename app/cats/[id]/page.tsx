@@ -190,6 +190,11 @@ export default async function CatDetailPage({
             )}
           </div>
 
+          {/* Rescuer */}
+          <p className="text-sm text-latte-light mb-3">
+            保護主: <span className="font-medium text-latte">{cat.rescuer_name ?? "運営事務局"}</span>
+          </p>
+
           {/* Tags */}
           {cat.tags.length > 0 && (
             <div className="flex flex-wrap gap-2">

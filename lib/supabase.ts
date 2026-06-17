@@ -26,6 +26,7 @@ export type Cat = {
   // Character & backstory
   personality: string | null
   rescue_story: string | null
+  rescuer_name: string | null
 }
 
 export const supabase = createClient(
