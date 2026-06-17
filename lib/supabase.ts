@@ -29,6 +29,14 @@ export type Cat = {
   rescuer_name: string | null
 }
 
+export type CatImage = {
+  id: string
+  cat_id: number
+  image_url: string
+  sort_order: number
+  created_at: string
+}
+
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

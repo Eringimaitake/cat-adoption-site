@@ -123,16 +123,24 @@ export default async function CatDetailPage({
   const numId = Number(id);
   if (isNaN(numId)) notFound();
 
-  const { data, error } = await supabase
-    .from("cats")
-    .select("*")
-    .eq("id", numId)
-    .single();
+  const [{ data, error }, { data: imageRows }] = await Promise.all([
+    supabase.from("cats").select("*").eq("id", numId).single(),
+    supabase
+      .from("cat_images")
+      .select("image_url")
+      .eq("cat_id", numId)
+      .order("sort_order", { ascending: true }),
+  ]);
 
   if (error || !data) notFound();
 
   const cat = data as Cat;
-  const images = cat.image_url ? [cat.image_url] : [];
+  const images =
+    imageRows && imageRows.length > 0
+      ? imageRows.map((row) => row.image_url)
+      : cat.image_url
+        ? [cat.image_url]
+        : [];
   const { from, to } = COLOR_THEMES[cat.color_theme] ?? COLOR_THEMES.orange;
 
   const hasProfile = cat.breed !== null || cat.location !== null;
@@ -159,8 +167,8 @@ export default async function CatDetailPage({
         </Link>
       </div>
 
-      {/* Photo gallery — wider than content for desktop impact */}
-      <div className="max-w-4xl mx-auto px-4 mt-4">
+      {/* Photo gallery */}
+      <div className="max-w-3xl mx-auto px-4 mt-4">
         <PhotoGallery
           images={images}
           catName={cat.name}

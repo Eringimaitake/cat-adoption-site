@@ -36,7 +36,7 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
       {/* ── Main viewer ────────────────────────────────────────────── */}
       <div
         className={`
-          relative h-64 sm:h-[26rem] lg:h-[34rem]
+          relative h-56 sm:h-72 lg:h-96
           bg-gradient-to-br ${from} ${to}
           rounded-3xl overflow-hidden
           flex items-center justify-center
