@@ -323,7 +323,7 @@ export default async function CatDetailPage({
         )}
 
         {/* ── Adoption CTA ── */}
-        <AdoptionSection catName={cat.name} catId={cat.id} />
+        <AdoptionSection catName={cat.name} />
       </section>
     </>
   );
