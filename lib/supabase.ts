@@ -27,6 +27,8 @@ export type Cat = {
   personality: string | null
   rescue_story: string | null
   rescuer_name: string | null
+  // 参加予定の譲渡会
+  event_id: string | null
 }
 
 export type CatImage = {
@@ -34,6 +36,15 @@ export type CatImage = {
   cat_id: number
   image_url: string
   sort_order: number
+  created_at: string
+}
+
+export type CatEvent = {
+  id: string
+  title: string
+  event_date: string // "YYYY-MM-DD"
+  location: string | null
+  event_time: string | null
   created_at: string
 }
 

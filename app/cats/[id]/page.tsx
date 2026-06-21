@@ -288,15 +288,6 @@ export default async function CatDetailPage({
           </SectionCard>
         )}
 
-        {/* ── Description ── */}
-        {cat.description && (
-          <SectionCard title="自己紹介">
-            <p className="px-6 py-5 text-latte text-sm leading-relaxed whitespace-pre-wrap">
-              {cat.description}
-            </p>
-          </SectionCard>
-        )}
-
         {/* ── Rescue story ── */}
         {hasRescueStory && (
           <SectionCard title="保護の経緯">
