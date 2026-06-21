@@ -9,6 +9,7 @@ const navLinks = [
   { href: "/guide", label: "ガイド" },
   { href: "/events", label: "譲渡会情報" },
   { href: "/cats", label: "猫を探す" },
+  { href: "/donate", label: "寄付" },
   { href: "/qa", label: "Q&A" },
   { href: "/contact", label: "お問い合わせ" },
 ];
@@ -27,7 +28,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2 shrink-0 group">
           <span className="text-2xl group-hover:animate-float-sm transition-all">🐱</span>
           <span className="font-bold text-lg text-caramel group-hover:text-peach transition-colors">
-            保護猫だより
+            ねこネコ市保護猫譲渡会
           </span>
         </Link>
 

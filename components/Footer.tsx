@@ -5,6 +5,7 @@ const navLinks = [
   { href: "/events", label: "譲渡会情報" },
   { href: "/cats", label: "猫を探す" },
   { href: "/process", label: "譲渡の流れ" },
+  { href: "/donate", label: "ご支援のお願い" },
   { href: "/contact", label: "お問い合わせ" },
 ];
 
