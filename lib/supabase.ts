@@ -48,6 +48,14 @@ export type CatEvent = {
   created_at: string
 }
 
+// "male"/"female" (stored by the app) → 日本語表示。それ以外の値はそのまま表示する。
+export function formatGender(gender: string): string {
+  const normalized = gender.trim().toLowerCase();
+  if (normalized === "male") return "オス";
+  if (normalized === "female") return "メス";
+  return gender;
+}
+
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

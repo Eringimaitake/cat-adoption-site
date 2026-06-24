@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { supabase, type Cat } from "@/lib/supabase";
+import { supabase, formatGender, type Cat } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "猫を探す",
@@ -107,11 +107,16 @@ export default async function CatsPage() {
 
                   {/* Card body */}
                   <div className="p-4">
-                    <div className="flex items-baseline justify-between mb-2">
+                    <div className="flex items-baseline justify-between gap-2 mb-2">
                       <p className="font-bold text-latte text-lg">{cat.name}</p>
-                      <p className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
-                        {cat.age}・{cat.gender}
-                      </p>
+                      <div className="flex gap-1.5 shrink-0">
+                        <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
+                          {cat.age}
+                        </span>
+                        <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
+                          {formatGender(cat.gender)}
+                        </span>
+                      </div>
                     </div>
                     <p className="text-xs text-latte-light leading-relaxed mb-3 line-clamp-2">
                       {cat.description}

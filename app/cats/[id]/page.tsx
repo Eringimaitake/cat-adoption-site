@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { supabase, type Cat } from "@/lib/supabase";
+import { supabase, formatGender, type Cat } from "@/lib/supabase";
 import PhotoGallery from "./PhotoGallery";
 import AdoptionSection from "./AdoptionSection";
 
@@ -188,7 +188,7 @@ export default async function CatDetailPage({
             <span
               className={`bg-gradient-to-r ${from} ${to} text-latte text-sm font-medium px-3 py-1 rounded-full`}
             >
-              {cat.gender}
+              {formatGender(cat.gender)}
             </span>
             {cat.location && (
               <span className="flex items-center gap-1 text-sm text-latte-light">
