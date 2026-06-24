@@ -107,16 +107,14 @@ export default async function CatsPage() {
 
                   {/* Card body */}
                   <div className="p-4">
-                    <div className="flex items-baseline justify-between gap-2 mb-2">
-                      <p className="font-bold text-latte text-lg">{cat.name}</p>
-                      <div className="flex gap-1.5 shrink-0">
-                        <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
-                          {cat.age}
-                        </span>
-                        <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
-                          {formatGender(cat.gender)}
-                        </span>
-                      </div>
+                    <p className="font-bold text-latte text-lg mb-1.5">{cat.name}</p>
+                    <div className="flex gap-1.5 mb-2">
+                      <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
+                        {cat.age}
+                      </span>
+                      <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
+                        {formatGender(cat.gender)}
+                      </span>
                     </div>
                     <p className="text-xs text-latte-light leading-relaxed mb-3 line-clamp-2">
                       {cat.description}
