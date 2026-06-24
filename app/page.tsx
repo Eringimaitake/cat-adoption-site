@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { supabase, formatEventDateParts, type CatEvent } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "保護猫だより | ホーム",
 };
+
+// force-dynamic ensures "today" and the nearest event are always evaluated fresh
+export const dynamic = "force-dynamic";
 
 const featuredCats = [
   { id: 1, name: "みかん", age: "3歳", gender: "女の子", personality: "甘えん坊", emoji: "🧡", from: "from-orange-100", to: "to-peach-light" },
@@ -20,7 +24,19 @@ const steps = [
   { icon: "💕", label: "正式譲渡",     step: "05" },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const { data: nextEventData } = await supabase
+    .from("events")
+    .select("*")
+    .gte("event_date", today)
+    .order("event_date", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  const nextEvent = nextEventData as CatEvent | null;
+  const nextEventDate = nextEvent ? formatEventDateParts(nextEvent.event_date) : null;
+
   return (
     <>
       {/* ── Hero ── */}
@@ -130,25 +146,36 @@ export default function HomePage() {
             <span className="text-2xl">📅</span>
             <h2 className="text-2xl font-bold text-latte">次回の譲渡会</h2>
           </div>
-          <div className="bg-ivory rounded-3xl shadow-md overflow-hidden border border-caramel-light hover:shadow-lg transition-shadow">
-            <div className="bg-gradient-to-r from-peach to-peach-dark h-1.5" />
-            <div className="p-6 flex flex-col sm:flex-row gap-6 items-center">
-              <div className="text-center bg-peach text-white rounded-2xl px-6 py-5 min-w-[110px] shadow">
-                <p className="text-xs opacity-80">2026年</p>
-                <p className="text-5xl font-bold leading-none my-1">7/12</p>
-                <p className="text-sm">日曜日</p>
-              </div>
-              <div className="flex-1 text-center sm:text-left">
-                <span className="inline-block bg-peach-pale text-peach text-xs font-bold px-3 py-1 rounded-full mb-2">次回開催</span>
-                <p className="font-bold text-xl text-latte mb-2">第34回 保護猫譲渡会</p>
-                <p className="text-latte-light text-sm">🕙 10:00〜16:00</p>
-                <p className="text-latte-light text-sm mt-0.5">📍 ○○コミュニティセンター 第1会議室</p>
-                <Link href="/events" className="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-peach hover:text-peach-dark transition-colors">
-                  詳細を見る <span>→</span>
-                </Link>
+          {nextEvent && nextEventDate ? (
+            <div className="bg-ivory rounded-3xl shadow-md overflow-hidden border border-caramel-light hover:shadow-lg transition-shadow">
+              <div className="bg-gradient-to-r from-peach to-peach-dark h-1.5" />
+              <div className="p-6 flex flex-col sm:flex-row gap-6 items-center">
+                <div className="text-center bg-peach text-white rounded-2xl px-6 py-5 min-w-[110px] shadow">
+                  <p className="text-xs opacity-80">{nextEventDate.year}年</p>
+                  <p className="text-5xl font-bold leading-none my-1">
+                    {nextEventDate.month}/{nextEventDate.day}
+                  </p>
+                  <p className="text-sm">{nextEventDate.dayOfWeek}曜日</p>
+                </div>
+                <div className="flex-1 text-center sm:text-left">
+                  <span className="inline-block bg-peach-pale text-peach text-xs font-bold px-3 py-1 rounded-full mb-2">次回開催</span>
+                  <p className="font-bold text-xl text-latte mb-2">{nextEvent.title}</p>
+                  <p className="text-latte-light text-sm">🕙 {nextEvent.event_time ?? "時間未定"}</p>
+                  <p className="text-latte-light text-sm mt-0.5">📍 {nextEvent.location ?? "場所未定"}</p>
+                  <Link href="/events" className="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-peach hover:text-peach-dark transition-colors">
+                    詳細を見る <span>→</span>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="bg-ivory rounded-3xl border border-caramel-light p-8 text-center">
+              <p className="text-latte-light text-sm mb-3">現在、開催予定の譲渡会はありません。</p>
+              <Link href="/events" className="inline-flex items-center gap-1 text-sm font-semibold text-peach hover:text-peach-dark transition-colors">
+                譲渡会情報を見る <span>→</span>
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 

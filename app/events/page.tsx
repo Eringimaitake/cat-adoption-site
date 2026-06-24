@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { supabase, type CatEvent } from "@/lib/supabase";
+import { supabase, formatEventDateParts, type CatEvent } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "譲渡会情報",
@@ -10,13 +10,6 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const ACCENTS = ["bg-peach", "bg-sage", "bg-paw"];
-
-function formatDateParts(eventDate: string) {
-  const [year, month, day] = eventDate.split("-").map(Number);
-  const dateObj = new Date(year, month - 1, day);
-  const dayOfWeek = dateObj.toLocaleDateString("ja-JP", { weekday: "short" });
-  return { year, month, day, dayOfWeek };
-}
 
 export default async function EventsPage() {
   const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
@@ -53,7 +46,7 @@ export default async function EventsPage() {
             </p>
           ) : (
             events.map((ev, index) => {
-              const { year, month, day, dayOfWeek } = formatDateParts(ev.event_date);
+              const { year, month, day, dayOfWeek } = formatEventDateParts(ev.event_date);
               const accent = ACCENTS[index % ACCENTS.length];
               const isNext = index === 0;
 

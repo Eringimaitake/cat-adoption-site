@@ -56,6 +56,13 @@ export function formatGender(gender: string): string {
   return gender;
 }
 
+export function formatEventDateParts(eventDate: string) {
+  const [year, month, day] = eventDate.split("-").map(Number);
+  const dateObj = new Date(year, month - 1, day);
+  const dayOfWeek = dateObj.toLocaleDateString("ja-JP", { weekday: "short" });
+  return { year, month, day, dayOfWeek };
+}
+
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
