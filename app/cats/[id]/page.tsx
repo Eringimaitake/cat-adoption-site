@@ -268,9 +268,9 @@ export default async function CatDetailPage({
                 <p className="text-xs text-latte-light mb-2">猫エイズ (FIV)</p>
                 <StatusBadge
                   value={cat.fiv_status}
-                  trueLabel="陽性"
-                  falseLabel="陰性"
-                  trueIsGood={false}
+                  trueLabel="陰性"
+                  falseLabel="陽性"
+                  trueIsGood={true}
                 />
               </div>
 
@@ -279,9 +279,9 @@ export default async function CatDetailPage({
                 <p className="text-xs text-latte-light mb-2">猫白血病 (FeLV)</p>
                 <StatusBadge
                   value={cat.felv_status}
-                  trueLabel="陽性"
-                  falseLabel="陰性"
-                  trueIsGood={false}
+                  trueLabel="陰性"
+                  falseLabel="陽性"
+                  trueIsGood={true}
                 />
               </div>
             </div>
