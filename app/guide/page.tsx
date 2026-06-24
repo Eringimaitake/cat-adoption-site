@@ -30,7 +30,7 @@ const rescueFlow = [
     step: "01",
     icon: "✉️",
     title: "まずはお問い合わせ",
-    body: "保護した猫の状況（場所・健康状態・年齢の目安）を教えてください。メールまたはお電話でご相談を受け付けています。",
+    body: "保護した猫の状況（場所・健康状態・年齢の目安）を教えてください。メールにてご相談を受け付けています。",
   },
   {
     step: "02",
@@ -305,7 +305,7 @@ export default function GuidePage() {
             ✉️ 保護相談・お問い合わせはこちら
           </Link>
           <p className="text-center text-xs text-latte-light">
-            📞 お急ぎの場合はお電話にてご相談ください：000-0000-0000
+            📧 お急ぎの場合もまずはメールにてご相談ください：takonekokai@gmail.com
             <br />受付時間 10:00〜17:00（土日祝除く）
           </p>
         </div>

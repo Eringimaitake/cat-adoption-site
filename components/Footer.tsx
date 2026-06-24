@@ -62,11 +62,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm text-latte-light">
               <li className="flex items-start gap-2">
                 <span>📧</span>
-                <span>info@hogo-neko.example.jp</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span>📞</span>
-                <span>000-0000-0000</span>
+                <span>takonekokai@gmail.com</span>
               </li>
               <li className="flex items-start gap-2">
                 <span>🕐</span>

@@ -6,8 +6,7 @@ export const metadata: Metadata = {
 };
 
 const contactInfo = [
-  { icon: "📧", label: "メール", value: "info@hogo-neko.example.jp" },
-  { icon: "📞", label: "電話", value: "000-0000-0000" },
+  { icon: "📧", label: "メール", value: "takonekokai@gmail.com" },
   { icon: "🕐", label: "受付時間", value: "10:00〜17:00（土日祝除く）" },
 ];
 
@@ -27,7 +26,7 @@ export default function ContactPage() {
         <div className="max-w-2xl mx-auto">
 
           {/* Contact info cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
             {contactInfo.map(({ icon, label, value }) => (
               <div
                 key={label}
@@ -52,7 +51,7 @@ export default function ContactPage() {
           <p className="text-center text-xs text-latte-light mt-6 leading-relaxed">
             内容によっては返信にお時間をいただく場合があります。
             <br />
-            3営業日を過ぎてもご返信がない場合は、お電話にてご確認ください。
+            3営業日を過ぎてもご返信がない場合は、お手数ですが再度メールにてご確認ください。
           </p>
         </div>
       </section>

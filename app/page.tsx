@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -23,19 +24,33 @@ export default function HomePage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-peach-pale via-ivory to-paw-light py-24 md:py-36">
+      <section className="relative overflow-hidden bg-gradient-to-br from-peach-pale via-ivory to-paw-light py-16 md:py-20">
         <span className="absolute top-6 left-6 text-5xl opacity-10 rotate-12 select-none">🐾</span>
         <span className="absolute top-16 right-10 text-7xl opacity-10 -rotate-12 select-none">🐾</span>
         <span className="absolute bottom-10 left-20 text-4xl opacity-10 rotate-6 select-none">🐾</span>
         <span className="absolute bottom-6 right-24 text-3xl opacity-10 -rotate-6 select-none">🐾</span>
 
-        <div className="relative max-w-3xl mx-auto px-4 text-center">
-          <div className="text-8xl md:text-9xl mb-8 animate-float inline-block">🐱</div>
-          <h1 className="text-3xl md:text-5xl font-bold text-latte leading-tight mb-5">
-            あなたと出会うのを
-            <br />
-            <span className="text-peach">待っている猫がいます。</span>
-          </h1>
+        <div className="relative max-w-4xl mx-auto px-4 text-center">
+          {/* Photo banner with heading overlaid on top */}
+          <div className="relative w-full aspect-[16/9] sm:aspect-[2.2/1] rounded-3xl overflow-hidden shadow-xl mb-8">
+            <Image
+              src="/top_picture.jpg"
+              alt="保護された子猫たち"
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 896px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+            <div className="absolute inset-0 flex flex-col items-center justify-end px-4 pb-5 sm:pb-8">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white leading-tight drop-shadow-lg">
+                あなたと出会うのを
+                <br />
+                <span className="text-peach-light">待っている猫がいます。</span>
+              </h1>
+            </div>
+          </div>
+
           <p className="text-latte-light text-base md:text-lg mb-10 leading-relaxed max-w-md mx-auto">
             保護猫だよりは、保護された猫たちが新しい家族と
             <br className="hidden sm:block" />
