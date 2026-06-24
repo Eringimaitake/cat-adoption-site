@@ -1,20 +1,36 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { supabase, formatEventDateParts, type CatEvent } from "@/lib/supabase";
+import {
+  supabase,
+  formatEventDateParts,
+  formatGender,
+  type Cat,
+  type CatEvent,
+} from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "保護猫だより | ホーム",
 };
 
-// force-dynamic ensures "today" and the nearest event are always evaluated fresh
+// force-dynamic ensures "today" and the latest cats/events are always evaluated fresh
 export const dynamic = "force-dynamic";
 
-const featuredCats = [
-  { id: 1, name: "みかん", age: "3歳", gender: "女の子", personality: "甘えん坊", emoji: "🧡", from: "from-orange-100", to: "to-peach-light" },
-  { id: 2, name: "そら",   age: "1歳", gender: "男の子", personality: "活発・遊び好き", emoji: "💙", from: "from-sky-100",    to: "to-sage-light" },
-  { id: 3, name: "ゆき",   age: "5歳", gender: "女の子", personality: "穏やか・おっとり", emoji: "🤍", from: "from-blue-50",   to: "to-paw-light" },
-];
+// Gradient classes listed explicitly so Tailwind's scanner includes them
+const COLOR_THEMES: Record<string, { from: string; to: string }> = {
+  orange:      { from: "from-orange-100", to: "to-peach-light" },
+  sky:         { from: "from-sky-100",    to: "to-sage-light"  },
+  blue:        { from: "from-blue-50",    to: "to-paw-light"   },
+  amber:       { from: "from-amber-100",  to: "to-orange-50"   },
+  pink:        { from: "from-pink-100",   to: "to-paw-light"   },
+  rose:        { from: "from-rose-100",   to: "to-peach-light" },
+  yellow:      { from: "from-yellow-100", to: "to-orange-50"   },
+  amber_light: { from: "from-amber-50",   to: "to-yellow-50"   },
+};
+
+function getTheme(key: string): { from: string; to: string } {
+  return COLOR_THEMES[key] ?? COLOR_THEMES.orange;
+}
 
 const steps = [
   { icon: "✉️", label: "お問い合わせ", step: "01" },
@@ -36,6 +52,15 @@ export default async function HomePage() {
 
   const nextEvent = nextEventData as CatEvent | null;
   const nextEventDate = nextEvent ? formatEventDateParts(nextEvent.event_date) : null;
+
+  const { data: featuredCatsData } = await supabase
+    .from("cats")
+    .select("*")
+    .eq("is_adopted", false)
+    .order("created_at", { ascending: false })
+    .limit(3);
+
+  const featuredCats: Cat[] = featuredCatsData ?? [];
 
   return (
     <>
@@ -187,26 +212,57 @@ export default async function HomePage() {
             <h2 className="text-2xl font-bold text-latte">里親を募集中の猫たち</h2>
             <p className="text-latte-light text-sm mt-2">一緒に暮らす家族を待っています</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {featuredCats.map((cat) => (
-              <div key={cat.id} className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
-                <div className={`h-44 bg-gradient-to-br ${cat.from} ${cat.to} flex items-center justify-center relative`}>
-                  <span className="text-7xl group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">{cat.emoji}</span>
-                  <span className="absolute bottom-2 right-3 text-xl opacity-20 select-none">🐾</span>
-                  <span className="absolute top-3 left-2 text-sm opacity-15 select-none">🐾</span>
-                </div>
-                <div className="p-4">
-                  <div className="flex items-baseline justify-between mb-1">
-                    <p className="font-bold text-latte text-lg">{cat.name}</p>
-                    <p className="text-xs text-latte-light">{cat.age} / {cat.gender}</p>
-                  </div>
-                  <span className="inline-block bg-paw-light text-paw text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                    {cat.personality}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          {featuredCats.length === 0 ? (
+            <p className="text-center text-latte-light text-sm py-10">
+              現在、里親募集中の猫の登録がありません。
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              {featuredCats.map((cat) => {
+                const { from, to } = getTheme(cat.color_theme);
+                return (
+                  <Link
+                    key={cat.id}
+                    href={`/cats/${cat.id}`}
+                    className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group block"
+                  >
+                    <div className={`h-44 bg-gradient-to-br ${from} ${to} flex items-center justify-center relative overflow-hidden`}>
+                      {cat.image_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={cat.image_url}
+                          alt={cat.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <span className="text-7xl group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+                          {cat.emoji}
+                        </span>
+                      )}
+                      <span className="absolute bottom-2 right-3 text-xl opacity-20 select-none">🐾</span>
+                      <span className="absolute top-3 left-2 text-sm opacity-15 select-none">🐾</span>
+                    </div>
+                    <div className="p-4">
+                      <p className="font-bold text-latte text-lg mb-1.5">{cat.name}</p>
+                      <div className="flex gap-1.5 mb-2">
+                        <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
+                          {cat.age}
+                        </span>
+                        <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
+                          {formatGender(cat.gender)}
+                        </span>
+                      </div>
+                      {cat.tags.length > 0 && (
+                        <span className="inline-block bg-paw-light text-paw text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                          {cat.tags[0]}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
           <div className="text-center mt-10">
             <Link href="/cats" className="inline-flex items-center gap-2 bg-peach text-white font-bold px-8 py-3 rounded-full shadow hover:bg-peach-dark hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
               🐱 すべての猫を見る
