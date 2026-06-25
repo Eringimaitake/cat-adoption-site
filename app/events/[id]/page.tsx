@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { supabase, type Cat, type CatEvent } from "@/lib/supabase";
+import { supabase, formatGender, type Cat, type CatEvent } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -142,7 +142,7 @@ export default async function EventDetailPage({
                       <img
                         src={cat.image_url}
                         alt={cat.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                       />
                     ) : (
                       <span className="text-7xl group-hover:scale-110 transition-transform duration-500 drop-shadow">
@@ -151,11 +151,14 @@ export default async function EventDetailPage({
                     )}
                   </div>
                   <div className="p-4">
-                    <div className="flex items-baseline justify-between mb-1">
-                      <p className="font-bold text-latte text-lg">{cat.name}</p>
-                      <p className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
-                        {cat.age}・{cat.gender}
-                      </p>
+                    <p className="font-bold text-latte text-lg mb-1.5">{cat.name}</p>
+                    <div className="flex gap-1.5 mb-2">
+                      <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
+                        {cat.age}
+                      </span>
+                      <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
+                        {formatGender(cat.gender)}
+                      </span>
                     </div>
                     <p className="text-xs text-latte-light leading-relaxed line-clamp-2">
                       {cat.description}
