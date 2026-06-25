@@ -54,7 +54,7 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
             key={idx}
             src={images[idx]}
             alt={`${catName} ${idx + 1}`}
-            className="w-full h-full object-cover animate-photo-fade"
+            className="w-full h-full object-contain animate-photo-fade"
           />
         ) : (
           /* Emoji fallback when no image_url is stored */
