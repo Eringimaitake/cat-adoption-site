@@ -9,47 +9,38 @@ const steps = [
   {
     step: "01",
     icon: "✉️",
-    title: "お問い合わせ",
-    body: "まずはお問い合わせフォームよりご連絡ください。気になる猫の名前や、あなたの生活環境についてざっくりと教えていただくとスムーズです。",
+    title: "お申込み",
+    body: [
+      "お申込みアンケートをご記入ください。",
+      "2〜3日以内に保護主よりご連絡させていただきます。",
+    ],
     color: "bg-peach-pale",
     border: "border-peach",
     num: "bg-peach text-white",
   },
   {
     step: "02",
-    icon: "📋",
-    title: "事前審査（面談）",
-    body: "生活環境や飼育経験などについてお伺いします。怖いものではなく、猫が幸せに暮らせるかを一緒に確認するための対話です。オンライン対応も可能です。",
+    icon: "🐈",
+    title: "トライアル",
+    body: [
+      "ネコさんを迎えるご準備をお願いします。",
+      "準備が整い次第トライアルスタートです。",
+      "期間はネコさんによりますが1〜2週間程度です。",
+    ],
     color: "bg-sage-light/50",
     border: "border-sage",
     num: "bg-sage text-white",
   },
   {
     step: "03",
-    icon: "🐾",
-    title: "譲渡会でお顔合わせ",
-    body: "近くの譲渡会にお越しいただき、実際に猫たちと触れ合ってみてください。スタッフもサポートしますので、お気軽にどうぞ。",
+    icon: "📝",
+    title: "正式譲渡",
+    body: [
+      "ネコさんが環境に慣れて、保護主と里親様の双方の判断で正式な譲渡となります。",
+    ],
     color: "bg-paw-light/50",
     border: "border-paw",
     num: "bg-paw text-white",
-  },
-  {
-    step: "04",
-    icon: "🏠",
-    title: "トライアル期間（約2週間）",
-    body: "正式譲渡前に約2週間のトライアル期間を設けています。猫も人もお互いに慣れるための大切な時間です。不安なことがあればいつでもご相談ください。",
-    color: "bg-caramel-light/50",
-    border: "border-caramel",
-    num: "bg-caramel text-white",
-  },
-  {
-    step: "05",
-    icon: "💕",
-    title: "正式譲渡",
-    body: "トライアルが無事に終われば正式なご家族のお仲間入りです。その後も何かあればいつでもご相談いただけます。長いお付き合いをよろしくお願いします！",
-    color: "bg-latte-pale/50",
-    border: "border-latte",
-    num: "bg-latte text-white",
   },
 ];
 
@@ -91,29 +82,42 @@ export default function ProcessPage() {
 
       {/* Steps */}
       <section className="py-14 px-4">
-        <div className="max-w-2xl mx-auto space-y-5">
-          {steps.map(({ step, icon, title, body, color, border, num }, index) => (
-            <div key={step} className="flex gap-5">
-              {/* Connector */}
-              <div className="flex flex-col items-center">
-                <div
-                  className={`w-12 h-12 rounded-2xl ${num} flex items-center justify-center text-xl shadow-sm shrink-0`}
-                >
-                  {icon}
-                </div>
-                {index < steps.length - 1 && (
-                  <div className="w-0.5 flex-1 bg-caramel-light mt-2" />
-                )}
-              </div>
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-caramel font-semibold text-sm mb-1">STEPS</p>
+            <h2 className="text-2xl font-bold text-latte">正式譲渡までの流れ</h2>
+          </div>
 
-              {/* Content */}
-              <div className={`flex-1 pb-6 ${color} border-l-4 ${border} rounded-r-2xl px-5 py-4`}>
-                <p className="text-xs font-bold text-latte-light mb-0.5">STEP {step}</p>
-                <p className="font-bold text-latte text-lg mb-1.5">{title}</p>
-                <p className="text-sm text-latte-light leading-relaxed">{body}</p>
+          <div className="space-y-5">
+            {steps.map(({ step, icon, title, body, color, border, num }, index) => (
+              <div key={step} className="flex gap-5">
+                {/* Connector */}
+                <div className="flex flex-col items-center">
+                  <div
+                    className={`w-12 h-12 rounded-2xl ${num} flex items-center justify-center text-xl shadow-sm shrink-0`}
+                  >
+                    {icon}
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div className="w-0.5 flex-1 bg-caramel-light mt-2" />
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className={`flex-1 pb-6 ${color} border-l-4 ${border} rounded-r-2xl px-5 py-4`}>
+                  <p className="text-xs font-bold text-latte-light mb-0.5">STEP {step}</p>
+                  <p className="font-bold text-latte text-lg mb-1.5">{title}</p>
+                  <div className="space-y-1">
+                    {body.map((line, i) => (
+                      <p key={i} className="text-sm text-latte-light leading-relaxed">
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 

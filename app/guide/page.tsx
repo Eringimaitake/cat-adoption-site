@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "里親・保護ガイド",
   description:
-    "猫を迎えたい方・猫を保護してほしい方それぞれへの専用ガイドページです。",
+    "猫を迎えたい方・猫を保護されている方それぞれへの専用ガイドページです。",
 };
 
 const adoptChecklist = [
@@ -29,20 +29,20 @@ const rescueFlow = [
   {
     step: "01",
     icon: "✉️",
-    title: "まずはお問い合わせ",
+    title: "まずはご相談",
     body: "保護した猫の状況（場所・健康状態・年齢の目安）を教えてください。メールにてご相談を受け付けています。",
   },
   {
     step: "02",
     icon: "📋",
-    title: "状況確認・相談",
-    body: "スタッフが状況を確認し、今後の対応について一緒に考えます。保護施設の空き状況や一時預かりの手配もご案内します。",
+    title: "掲載に向けた準備",
+    body: "ワクチン接種や健康状態など、サイト掲載に必要な情報を一緒に整理します。必要に応じて動物病院や他団体のご紹介も行います。",
   },
   {
     step: "03",
     icon: "🐾",
-    title: "受け入れ・里親探し",
-    body: "受け入れ可能な場合は、健康診断・ワクチン接種・去勢避妊処置を行い、里親募集を開始します。",
+    title: "サイト掲載・里親探しのサポート",
+    body: "猫のプロフィールを当サイトに掲載し、里親希望の方とのマッチングや譲渡会への参加をサポートします。",
   },
 ];
 
@@ -67,7 +67,7 @@ export default function GuidePage() {
           猫と関わるすべての人へ
         </h1>
         <p className="text-latte-light text-sm max-w-sm mx-auto leading-relaxed">
-          「猫を迎えたい方」「猫を保護してほしい方」、
+          「猫を迎えたい方」「猫を保護されている方」、
           <br />
           どちらもまずはこのページをご覧ください。
         </p>
@@ -95,12 +95,12 @@ export default function GuidePage() {
             className="group flex flex-col items-center text-center bg-gradient-to-br from-peach-pale to-ivory rounded-3xl p-8 border-2 border-peach-light hover:border-peach hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
           >
             <span className="text-6xl mb-4 group-hover:animate-float-sm inline-block">🐾</span>
-            <p className="font-bold text-xl text-peach-dark mb-2">保護してほしい方へ</p>
+            <p className="font-bold text-xl text-peach-dark mb-2">猫を保護されている方へ</p>
             <p className="text-sm text-latte-light leading-relaxed mb-5">
-              野良猫や保護猫の里親探しのお手伝いをしたい方はこちらへ。
+              ご自身で保護された猫の里親探しや、活動のサポートについてはこちらへ。
             </p>
             <span className="inline-flex items-center gap-1 text-sm font-semibold text-peach group-hover:text-peach-dark">
-              保護依頼の流れへ ↓
+              保護主向けサポートへ ↓
             </span>
           </a>
         </div>
@@ -173,11 +173,9 @@ export default function GuidePage() {
             </h3>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               {[
-                { step: "1", label: "お問い合わせ", icon: "✉️" },
-                { step: "2", label: "審査・面談",   icon: "💬" },
-                { step: "3", label: "譲渡会参加",   icon: "🐾" },
-                { step: "4", label: "トライアル",   icon: "🏠" },
-                { step: "5", label: "正式譲渡",     icon: "💕" },
+                { step: "1", label: "お申込み",   icon: "✉️" },
+                { step: "2", label: "トライアル", icon: "🐈" },
+                { step: "3", label: "正式譲渡",   icon: "📝" },
               ].map(({ step, label, icon }, i, arr) => (
                 <div key={step} className="flex items-center gap-2">
                   <div className="flex flex-col items-center w-16 text-center">
@@ -222,11 +220,11 @@ export default function GuidePage() {
             </div>
             <div>
               <p className="text-xs font-bold text-peach uppercase tracking-wider">For Rescuers</p>
-              <h2 className="text-2xl font-bold text-latte">猫を保護してほしい方へ</h2>
+              <h2 className="text-2xl font-bold text-latte">猫を保護されている方へ</h2>
             </div>
           </div>
           <p className="text-latte-light text-sm leading-relaxed">
-            野良猫の保護や飼育困難など、様々な理由でご相談いただけます。一人で抱え込まずに、まずはご連絡ください。
+            野良猫の保護や、保護した猫の里親探しなど、様々な場面でサポートいたします。一人で抱え込まずに、まずはご連絡ください。
           </p>
         </div>
 
@@ -251,7 +249,7 @@ export default function GuidePage() {
           <div className="bg-white rounded-3xl p-6 shadow-sm border border-caramel-light">
             <h3 className="font-bold text-latte text-lg mb-6 flex items-center gap-2">
               <span className="w-8 h-8 rounded-xl bg-peach-light flex items-center justify-center text-base">📋</span>
-              保護依頼の流れ
+              サポートの流れ
             </h3>
             <div className="space-y-5">
               {rescueFlow.map(({ step, icon, title, body }, index) => (
@@ -285,7 +283,7 @@ export default function GuidePage() {
                 "その猫は本当に野良猫ですか？首輪がないか、近くに飼い主がいないか確認を。",
                 "猫が元気な子猫の場合、近くにお母さん猫がいる可能性があります。しばらく様子を見てください。",
                 "緊急の外傷・病気がある場合は、まず動物病院へ。その後ご相談ください。",
-                "受け入れ状況によってはご希望に添えない場合があります。ご了承ください。",
+                "サイトへの掲載やマッチングのサポートには、状況によりお時間をいただく場合があります。ご了承ください。",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm text-latte">
                   <span className="w-5 h-5 rounded-full bg-peach-light flex items-center justify-center text-peach text-xs font-bold shrink-0 mt-0.5">

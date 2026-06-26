@@ -24,7 +24,7 @@ export default function Footer() {
               <span className="text-peach-light">保護猫だより</span>
             </div>
             <p className="text-sm text-latte-light leading-relaxed">
-              保護された猫たちが新しい家族と出会えるよう活動しています。一匹でも多くの猫が幸せな生活を送れますように。
+              保護主の方々の活動を支援し、保護された猫たちが新しい家族と出会えるようサポートしています。一匹でも多くの猫が幸せな生活を送れますように。
             </p>
             <div className="flex gap-3 mt-4 text-xl">
               <span title="保護猫">🐾</span>

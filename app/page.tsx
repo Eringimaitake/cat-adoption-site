@@ -10,7 +10,7 @@ import {
 } from "@/lib/supabase";
 
 export const metadata: Metadata = {
-  title: "保護猫だより | ホーム",
+  title: "ねこネコ市保護猫譲渡会 | ホーム",
 };
 
 // force-dynamic ensures "today" and the latest cats/events are always evaluated fresh
@@ -33,11 +33,9 @@ function getTheme(key: string): { from: string; to: string } {
 }
 
 const steps = [
-  { icon: "✉️", label: "お問い合わせ", step: "01" },
-  { icon: "📋", label: "事前審査",     step: "02" },
-  { icon: "🐾", label: "譲渡会参加",   step: "03" },
-  { icon: "🏠", label: "トライアル",   step: "04" },
-  { icon: "💕", label: "正式譲渡",     step: "05" },
+  { icon: "✉️", label: "お申込み",   step: "01" },
+  { icon: "🐈", label: "トライアル", step: "02" },
+  { icon: "📝", label: "正式譲渡",   step: "03" },
 ];
 
 export default async function HomePage() {
@@ -93,9 +91,7 @@ export default async function HomePage() {
           </div>
 
           <p className="text-latte-light text-base md:text-lg mb-10 leading-relaxed max-w-md mx-auto">
-            保護猫だよりは、保護された猫たちが新しい家族と
-            <br className="hidden sm:block" />
-            出会えるよう活動しています。
+            ねこネコ市保護猫譲渡会は、保護主の方々と里親希望の方をつなぎ、保護された猫たちが新しい家族と出会えるよう支援しています。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/cats" className="inline-flex items-center gap-2 bg-peach text-white font-bold px-8 py-3.5 rounded-full shadow-md hover:bg-peach-dark hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">
@@ -135,12 +131,12 @@ export default async function HomePage() {
               className="group flex flex-col items-center text-center bg-gradient-to-br from-peach-pale to-ivory rounded-3xl p-8 border-2 border-peach-light hover:border-peach hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
             >
               <span className="text-6xl mb-4 group-hover:animate-float-sm inline-block">🐾</span>
-              <p className="font-bold text-xl text-peach-dark mb-2">猫を保護してほしい方へ</p>
+              <p className="font-bold text-xl text-peach-dark mb-2">猫を保護されている方へ</p>
               <p className="text-sm text-latte-light leading-relaxed mb-5">
-                野良猫や保護猫の里親探しをお手伝いしたい方、保護相談はこちらへ。
+                保護した猫の里親探しや、活動のサポートについてはこちらへ。
               </p>
               <span className="inline-flex items-center gap-1 text-sm font-semibold text-peach group-hover:text-peach-dark transition-colors">
-                保護依頼の流れを見る <span>→</span>
+                保護主向けサポートを見る <span>→</span>
               </span>
             </Link>
           </div>
@@ -149,11 +145,10 @@ export default async function HomePage() {
 
       {/* ── Stats ── */}
       <section className="bg-ivory py-10 px-4">
-        <div className="max-w-3xl mx-auto grid grid-cols-3 divide-x divide-caramel-light text-center">
+        <div className="max-w-md mx-auto grid grid-cols-2 divide-x divide-caramel-light text-center">
           {[
-            { value: "230+", label: "保護した猫", icon: "🐱" },
-            { value: "180+", label: "新しい家族へ", icon: "🏠" },
-            { value: "3年",  label: "活動実績",   icon: "💕" },
+            { value: "160+", label: "新しい家族へ", icon: "🏠" },
+            { value: "4年",  label: "活動実績",   icon: "💕" },
           ].map(({ value, label, icon }) => (
             <div key={label} className="py-4 px-2">
               <div className="text-2xl mb-1">{icon}</div>

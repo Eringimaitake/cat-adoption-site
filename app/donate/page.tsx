@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import CopyField from "./CopyField";
 
 export const metadata: Metadata = {
   title: "ご支援のお願い",
-  description:
-    "保護猫活動を継続するための寄付金（銀行振込）・支援物資（Amazonウィッシュリスト）のご案内です。",
+  description: "保護猫活動を継続するための支援物資（Amazonウィッシュリスト）のご案内です。",
 };
 
 // ── 仮データ（正式な情報が決まったらここを書き換えてください） ──────────
-const BANK_NAME = "○○銀行";
-const BANK_BRANCH = "△△支店";
-const ACCOUNT_TYPE = "普通";
-const ACCOUNT_NUMBER = "1234567";
-const ACCOUNT_HOLDER = "シャ）ネコノタスケアイ";
-const AMAZON_WISHLIST_URL = "https://www.amazon.co.jp/hz/wishlist/ls/仮のID";
+const AMAZON_WISHLIST_URL = "https://www.amazon.jp/hz/wishlist/ls/8JO8SKJJM5E5?ref_=wl_share";
 // ──────────────────────────────────────────────────────────────
 
 export default function DonatePage() {
@@ -32,37 +25,7 @@ export default function DonatePage() {
 
       {/* ── Cards ── */}
       <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          {/* 寄付金（銀行振込） */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-caramel-light flex flex-col">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-2xl bg-sage-light flex items-center justify-center text-2xl shrink-0">
-                💰
-              </div>
-              <div>
-                <p className="text-xs font-bold text-sage uppercase tracking-wider">
-                  Donation
-                </p>
-                <h2 className="text-lg font-bold text-latte">寄付金（銀行振込）</h2>
-              </div>
-            </div>
-            <p className="text-sm text-latte-light leading-relaxed mb-5">
-              いただいたご寄付は、保護猫の医療費・ワクチン接種・フード代などの活動費として活用させていただきます。
-            </p>
-
-            <div className="bg-ivory rounded-2xl px-4 divide-y divide-caramel-light/50">
-              <CopyField label="銀行名" value={BANK_NAME} />
-              <CopyField label="支店名" value={BANK_BRANCH} />
-              <CopyField label="口座種別" value={ACCOUNT_TYPE} />
-              <CopyField label="口座番号" value={ACCOUNT_NUMBER} />
-              <CopyField label="口座名義" value={ACCOUNT_HOLDER} />
-            </div>
-
-            <p className="text-xs text-latte-light mt-4 leading-relaxed">
-              ※ お振込の際は、お名前の前に「キフ」とご記入いただけますと助かります。
-            </p>
-          </div>
-
+        <div className="max-w-md mx-auto">
           {/* 支援物資（Amazonウィッシュリスト） */}
           <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-caramel-light flex flex-col">
             <div className="flex items-center gap-3 mb-4">
@@ -99,7 +62,7 @@ export default function DonatePage() {
         </div>
 
         {/* Thanks note */}
-        <div className="max-w-3xl mx-auto mt-8 text-center bg-gradient-to-r from-sage-light/40 to-peach-pale rounded-3xl p-6">
+        <div className="max-w-md mx-auto mt-8 text-center bg-gradient-to-r from-sage-light/40 to-peach-pale rounded-3xl p-6">
           <p className="text-2xl mb-2">🐾💕</p>
           <p className="text-latte text-sm leading-relaxed">
             少しのご支援でも、猫たちにとって大きな力になります。
