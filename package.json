@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-og": "node scripts/generate-og-image.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.1",

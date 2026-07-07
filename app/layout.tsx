@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "保護猫だより",
     images: [
       {
-        url: "/top_picture.jpg",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "保護猫だより – 保護猫の里親募集サイト",
