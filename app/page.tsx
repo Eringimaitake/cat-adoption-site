@@ -15,12 +15,6 @@ export const metadata: Metadata = {
   title: { absolute: "保護猫だより | 保護猫譲渡会" },
   description:
     "保護主の方々と里親希望の方をつなぐ保護猫譲渡会サイト。里親募集中の猫の紹介・譲渡会情報・里親になる流れをご案内します。",
-  openGraph: {
-    title: "保護猫だより | 保護猫譲渡会",
-    description:
-      "保護主の方々と里親希望の方をつなぐ保護猫譲渡会サイト。里親募集中の猫の紹介・譲渡会情報・里親になる流れをご案内します。",
-    url: "/",
-  },
 };
 
 // force-dynamic ensures "today" and the latest cats/events are always evaluated fresh

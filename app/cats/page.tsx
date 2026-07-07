@@ -7,12 +7,6 @@ export const metadata: Metadata = {
   title: "猫を探す",
   description:
     "里親を募集している保護猫たちをご紹介。年齢・性別・性格など詳しいプロフィールを掲載。あなたにぴったりの猫を見つけてください。",
-  openGraph: {
-    title: "猫を探す | 保護猫だより",
-    description:
-      "里親を募集している保護猫たちをご紹介。年齢・性別・性格など詳しいプロフィールを掲載。あなたにぴったりの猫を見つけてください。",
-    url: "/cats",
-  },
 };
 
 // force-dynamic ensures cats data is always fetched fresh from Supabase

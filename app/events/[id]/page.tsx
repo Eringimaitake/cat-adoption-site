@@ -51,11 +51,6 @@ export async function generateMetadata({
   return {
     title,
     description: desc,
-    openGraph: {
-      title: `${title} | 保護猫だより`,
-      description: desc,
-      url: `/events/${id}`,
-    },
   };
 }
 

@@ -38,17 +38,21 @@ export async function generateMetadata({
     ? `${data.description.slice(0, 110)}。里親を募集しています。`
     : "里親を募集している保護猫です。詳しいプロフィールをご覧ください。";
 
+  // 猫固有の写真がある場合のみ openGraph を設定して og:image を上書き。
+  // 写真なしの場合は openGraph を省略し layout の /top_picture.jpg を継承する。
   return {
     title: name,
     description: desc,
-    openGraph: {
-      title: `${name}（里親募集中）`,
-      description: desc,
-      url: `/cats/${id}`,
-      images: data?.image_url
-        ? [{ url: data.image_url, alt: name }]
-        : [{ url: "/top_picture.jpg", alt: "保護猫だより" }],
-    },
+    ...(data?.image_url && {
+      openGraph: {
+        type: "website",
+        locale: "ja_JP",
+        siteName: "保護猫だより",
+        title: `${name}（里親募集中）`,
+        description: desc,
+        images: [{ url: data.image_url, alt: name }],
+      },
+    }),
   };
 }
 
