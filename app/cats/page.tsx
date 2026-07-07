@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { supabase, formatGender, type Cat } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "猫を探す",
+  description:
+    "里親を募集している保護猫たちをご紹介。年齢・性別・性格など詳しいプロフィールを掲載。あなたにぴったりの猫を見つけてください。",
+  openGraph: {
+    title: "猫を探す | 保護猫だより",
+    description:
+      "里親を募集している保護猫たちをご紹介。年齢・性別・性格など詳しいプロフィールを掲載。あなたにぴったりの猫を見つけてください。",
+    url: "/cats",
+  },
 };
 
 // force-dynamic ensures cats data is always fetched fresh from Supabase
@@ -90,11 +99,12 @@ export default async function CatsPage() {
                     className={`h-48 bg-gradient-to-br ${from} ${to} flex items-center justify-center relative overflow-hidden`}
                   >
                     {cat.image_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
+                        fill
                         src={cat.image_url}
                         alt={cat.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                     ) : (
                       <span className="text-8xl group-hover:scale-110 transition-transform duration-500 drop-shadow">

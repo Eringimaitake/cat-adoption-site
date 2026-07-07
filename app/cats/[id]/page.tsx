@@ -7,6 +7,8 @@ import AdoptionSection from "./AdoptionSection";
 
 export const dynamic = "force-dynamic";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 // Gradient classes listed explicitly so Tailwind's scanner includes them
 const COLOR_THEMES: Record<string, { from: string; to: string }> = {
   orange:      { from: "from-orange-100", to: "to-peach-light" },
@@ -27,10 +29,27 @@ export async function generateMetadata({
   const { id } = await params;
   const { data } = await supabase
     .from("cats")
-    .select("name")
+    .select("name, description, image_url")
     .eq("id", Number(id))
     .single();
-  return { title: data?.name ?? "猫の詳細" };
+
+  const name = data?.name ?? "猫の詳細";
+  const desc = data?.description
+    ? `${data.description.slice(0, 110)}。里親を募集しています。`
+    : "里親を募集している保護猫です。詳しいプロフィールをご覧ください。";
+
+  return {
+    title: name,
+    description: desc,
+    openGraph: {
+      title: `${name}（里親募集中）`,
+      description: desc,
+      url: `/cats/${id}`,
+      images: data?.image_url
+        ? [{ url: data.image_url, alt: name }]
+        : [{ url: "/top_picture.jpg", alt: "保護猫だより" }],
+    },
+  };
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -316,6 +335,29 @@ export default async function CatDetailPage({
         {/* ── Adoption CTA ── */}
         <AdoptionSection catName={cat.name} />
       </section>
+
+      {/* ItemPage 構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemPage",
+            name: `${cat.name}（里親募集中）`,
+            description: cat.description ?? `${cat.name}は里親を募集している保護猫です。`,
+            url: `${SITE_URL}/cats/${cat.id}`,
+            ...(cat.image_url && { image: cat.image_url }),
+            breadcrumb: {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "ホーム",     item: SITE_URL },
+                { "@type": "ListItem", position: 2, name: "猫を探す",   item: `${SITE_URL}/cats` },
+                { "@type": "ListItem", position: 3, name: cat.name,     item: `${SITE_URL}/cats/${cat.id}` },
+              ],
+            },
+          }),
+        }}
+      />
     </>
   );
 }

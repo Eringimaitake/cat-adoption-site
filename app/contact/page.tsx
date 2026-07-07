@@ -3,6 +3,14 @@ import ContactForm from "./ContactForm";
 
 export const metadata: Metadata = {
   title: "お問い合わせ",
+  description:
+    "保護猫の里親希望・譲渡会への参加・保護相談など、お気軽にお問い合わせください。メールにて3営業日以内にご返信いたします。",
+  openGraph: {
+    title: "お問い合わせ | 保護猫だより",
+    description:
+      "保護猫の里親希望・譲渡会への参加・保護相談など、お気軽にお問い合わせください。",
+    url: "/contact",
+  },
 };
 
 const contactInfo = [

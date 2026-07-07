@@ -4,6 +4,14 @@ import { supabase, formatEventDateParts, type CatEvent } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "譲渡会情報",
+  description:
+    "保護猫の譲渡会の開催情報をお知らせします。直接猫たちに会える機会です。ぜひお気軽にご参加ください。",
+  openGraph: {
+    title: "譲渡会情報 | 保護猫だより",
+    description:
+      "保護猫の譲渡会の開催情報をお知らせします。直接猫たちに会える機会です。ぜひお気軽にご参加ください。",
+    url: "/events",
+  },
 };
 
 // force-dynamic ensures events data is always fetched fresh from Supabase

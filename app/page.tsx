@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 import {
   supabase,
   formatEventDateParts,
@@ -10,7 +12,15 @@ import {
 } from "@/lib/supabase";
 
 export const metadata: Metadata = {
-  title: "ねこネコ市保護猫譲渡会 | ホーム",
+  title: { absolute: "保護猫だより | 保護猫譲渡会" },
+  description:
+    "保護主の方々と里親希望の方をつなぐ保護猫譲渡会サイト。里親募集中の猫の紹介・譲渡会情報・里親になる流れをご案内します。",
+  openGraph: {
+    title: "保護猫だより | 保護猫譲渡会",
+    description:
+      "保護主の方々と里親希望の方をつなぐ保護猫譲渡会サイト。里親募集中の猫の紹介・譲渡会情報・里親になる流れをご案内します。",
+    url: "/",
+  },
 };
 
 // force-dynamic ensures "today" and the latest cats/events are always evaluated fresh
@@ -223,11 +233,12 @@ export default async function HomePage() {
                   >
                     <div className={`h-44 bg-gradient-to-br ${from} ${to} flex items-center justify-center relative overflow-hidden`}>
                       {cat.image_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <Image
+                          fill
                           src={cat.image_url}
                           alt={cat.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, 33vw"
                         />
                       ) : (
                         <span className="text-7xl group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
@@ -341,6 +352,23 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
+      {/* Organization 構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "保護猫だより（ねこネコ市保護猫譲渡会）",
+            url: SITE_URL,
+            email: "takonekokai@gmail.com",
+            description:
+              "保護主の方々と里親希望の方をつなぎ、保護された猫たちが新しい家族と出会えるようサポートする保護猫譲渡会です。",
+            areaServed: "JP",
+          }),
+        }}
+      />
     </>
   );
 }

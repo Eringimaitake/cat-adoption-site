@@ -9,6 +9,18 @@ export const metadata: Metadata = {
     "新米里親さん・猫の飼育に悩む方へ。よくあるお悩みにやさしく回答します。",
 };
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: categories.flatMap((cat) =>
+    cat.items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    }))
+  ),
+};
+
 export default function QaPage() {
   return (
     <>
@@ -49,6 +61,12 @@ export default function QaPage() {
           <QaAccordion />
         </div>
       </section>
+
+      {/* FAQPage 構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
 
       {/* ── CTA ── */}
       <section className="py-12 px-4 bg-gradient-to-br from-paw-light to-peach-pale text-center">

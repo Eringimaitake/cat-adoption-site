@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase, formatGender, type Cat, type CatEvent } from "@/lib/supabase";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const dynamic = "force-dynamic";
 
@@ -36,10 +39,24 @@ export async function generateMetadata({
   const { id } = await params;
   const { data } = await supabase
     .from("events")
-    .select("title")
+    .select("title, event_date, location, event_time")
     .eq("id", id)
     .single();
-  return { title: data?.title ?? "譲渡会の詳細" };
+
+  const title = data?.title ?? "譲渡会の詳細";
+  const desc = data
+    ? `${data.event_date}開催「${data.title}」。場所：${data.location ?? "未定"}、時間：${data.event_time ?? "未定"}。保護猫たちに会いに来てください。`
+    : "保護猫の譲渡会情報です。";
+
+  return {
+    title,
+    description: desc,
+    openGraph: {
+      title: `${title} | 保護猫だより`,
+      description: desc,
+      url: `/events/${id}`,
+    },
+  };
 }
 
 export default async function EventDetailPage({
@@ -111,6 +128,34 @@ export default async function EventDetailPage({
         </div>
       </section>
 
+      {/* Event 構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Event",
+            name: event.title,
+            startDate: event.event_date,
+            eventStatus: "https://schema.org/EventScheduled",
+            eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+            location: {
+              "@type": "Place",
+              name: event.location ?? "場所未定",
+            },
+            organizer: {
+              "@type": "Organization",
+              name: "保護猫だより",
+              url: SITE_URL,
+            },
+            url: `${SITE_URL}/events/${event.id}`,
+            ...(event.event_time && {
+              description: `開催時間：${event.event_time}`,
+            }),
+          }),
+        }}
+      />
+
       {/* Participating cats */}
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-xl font-bold text-latte mb-6">
@@ -138,11 +183,12 @@ export default async function EventDetailPage({
                     className={`h-40 bg-gradient-to-br ${from} ${to} flex items-center justify-center relative overflow-hidden`}
                   >
                     {cat.image_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
+                        fill
                         src={cat.image_url}
                         alt={cat.name}
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                        className="object-contain group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 640px) 100vw, 50vw"
                       />
                     ) : (
                       <span className="text-7xl group-hover:scale-110 transition-transform duration-500 drop-shadow">

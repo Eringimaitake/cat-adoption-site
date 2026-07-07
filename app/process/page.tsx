@@ -3,6 +3,14 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "譲渡の流れ",
+  description:
+    "保護猫の里親になるまでの流れを3ステップで解説。お申込みからトライアル、正式譲渡まで丁寧にご案内します。初めての方もご安心ください。",
+  openGraph: {
+    title: "譲渡の流れ | 保護猫だより",
+    description:
+      "保護猫の里親になるまでの流れを3ステップで解説。お申込みからトライアル、正式譲渡まで丁寧にご案内します。",
+    url: "/process",
+  },
 };
 
 const steps = [
