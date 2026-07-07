@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 // Gradient classes listed explicitly so Tailwind's scanner includes them
@@ -45,16 +46,20 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
       >
         {hasImages ? (
           /*
-           * key={idx} causes React to remount the <img> on every index
-           * change, which re-triggers the animate-photo-fade CSS animation
-           * for a smooth cross-fade without external libraries.
+           * key={idx} remounts <Image> on index change → re-triggers
+           * animate-photo-fade CSS animation for a smooth cross-fade.
+           * priority={idx === 0}: 初回 SSR 時は必ず idx=0 なので <head> に
+           * <link rel="preload"> が挿入され LCP を改善する。
+           * /_next/image 経由でWebP変換・デバイス幅リサイズも適用される。
            */
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             key={idx}
+            fill
             src={images[idx]}
-            alt={`${catName} ${idx + 1}`}
-            className="w-full h-full object-contain animate-photo-fade"
+            alt={`${catName} の写真 ${idx + 1}`}
+            className="object-contain animate-photo-fade"
+            sizes="(max-width: 768px) calc(100vw - 32px), 736px"
+            priority={idx === 0}
           />
         ) : (
           /* Emoji fallback when no image_url is stored */
@@ -117,6 +122,7 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
        * Shown only when there are 2+ images.
        * onMouseEnter switches the main viewer instantly on hover;
        * onClick works as a fallback for touch/keyboard users.
+       * サムネイルは Next.js Image のデフォルト遅延読み込みで配信する。
        */}
       {hasMultiple && (
         <div className="flex gap-2.5 mt-3 overflow-x-auto scrollbar-none pb-1">
@@ -127,7 +133,7 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
               onMouseEnter={() => setCurrent(i)}
               aria-label={`写真 ${i + 1}を表示`}
               className={`
-                flex-shrink-0 rounded-2xl overflow-hidden
+                relative flex-shrink-0 rounded-2xl overflow-hidden
                 w-20 h-20 sm:w-24 sm:h-24
                 border-2 transition-all duration-200
                 ${
@@ -137,11 +143,12 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
                 }
               `}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
+                fill
                 src={src}
                 alt={`${catName} ${i + 1}`}
-                className="w-full h-full object-cover"
+                className="object-cover"
+                sizes="96px"
               />
             </button>
           ))}
