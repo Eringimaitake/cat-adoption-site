@@ -55,7 +55,7 @@ export async function generateMetadata({
       openGraph: {
         type: "website",
         locale: "ja_JP",
-        siteName: "保護猫だより",
+        siteName: "ねこネコ市保護猫譲渡会",
         title: `${name}（里親募集中）`,
         description: desc,
         images: [{ url: data.image_url, alt: name }],

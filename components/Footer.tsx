@@ -21,7 +21,7 @@ export default function Footer() {
           <div className="max-w-xs">
             <div className="flex items-center gap-2 text-xl font-bold mb-3">
               <span>🐱</span>
-              <span className="text-peach-light">保護猫だより</span>
+              <span className="text-peach-light">ねこネコ市保護猫譲渡会</span>
             </div>
             <p className="text-sm text-latte-light leading-relaxed">
               保護主の方々の活動を支援し、保護された猫たちが新しい家族と出会えるようサポートしています。一匹でも多くの猫が幸せな生活を送れますように。
@@ -73,7 +73,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-latte-light/30 text-center text-xs text-latte-light">
-          © 2026 保護猫だより. All rights reserved. 🐾
+          © 2026 ねこネコ市保護猫譲渡会. All rights reserved. 🐾
         </div>
       </div>
     </footer>

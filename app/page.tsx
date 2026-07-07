@@ -12,7 +12,7 @@ import {
 } from "@/lib/supabase";
 
 export const metadata: Metadata = {
-  title: { absolute: "保護猫だより | 保護猫譲渡会" },
+  title: { absolute: "ねこネコ市保護猫譲渡会" },
   description:
     "保護主の方々と里親希望の方をつなぐ保護猫譲渡会サイト。里親募集中の猫の紹介・譲渡会情報・里親になる流れをご案内します。",
 };
@@ -354,7 +354,7 @@ export default async function HomePage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "保護猫だより（ねこネコ市保護猫譲渡会）",
+            name: "ねこネコ市保護猫譲渡会",
             url: SITE_URL,
             email: "takonekokai@gmail.com",
             description:

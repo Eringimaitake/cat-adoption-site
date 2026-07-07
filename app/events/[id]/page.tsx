@@ -140,7 +140,7 @@ export default async function EventDetailPage({
             },
             organizer: {
               "@type": "Organization",
-              name: "保護猫だより",
+              name: "ねこネコ市保護猫譲渡会",
               url: SITE_URL,
             },
             url: `${SITE_URL}/events/${event.id}`,
