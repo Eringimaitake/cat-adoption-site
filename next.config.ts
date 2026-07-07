@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/**",
       },
     ],
+    qualities: [60, 75, 85],
+    minimumCacheTTL: 2678400, // 31日: 猫画像はURLが変わらない限り内容が変わらないため長期キャッシュ
   },
 };
 

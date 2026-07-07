@@ -5,7 +5,15 @@ import { supabase, formatGender, type Cat } from "@/lib/supabase";
 import PhotoGallery from "./PhotoGallery";
 import AdoptionSection from "./AdoptionSection";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600; // ISR: 1時間ごとにバックグラウンド再生成
+
+export async function generateStaticParams() {
+  const { data } = await supabase
+    .from("cats")
+    .select("id")
+    .eq("is_adopted", false);
+  return (data ?? []).map((cat) => ({ id: String(cat.id) }));
+}
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 

@@ -59,7 +59,10 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
             alt={`${catName} の写真 ${idx + 1}`}
             className="object-contain animate-photo-fade"
             sizes="(max-width: 768px) calc(100vw - 32px), 736px"
-            priority={idx === 0}
+            preload={idx === 0}
+            fetchPriority={idx === 0 ? "high" : "auto"}
+            loading="eager"
+            quality={60}
           />
         ) : (
           /* Emoji fallback when no image_url is stored */
