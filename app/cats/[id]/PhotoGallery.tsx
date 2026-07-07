@@ -46,18 +46,19 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
       >
         {hasImages ? (
           /*
-           * key={idx} remounts <Image> on index change → re-triggers
-           * animate-photo-fade CSS animation for a smooth cross-fade.
-           * priority={idx === 0}: 初回 SSR 時は必ず idx=0 なので <head> に
-           * <link rel="preload"> が挿入され LCP を改善する。
-           * /_next/image 経由でWebP変換・デバイス幅リサイズも適用される。
+           * idx === 0 の場合はアニメーションなし:
+           *   - SSR → opacity:0 スタートのアニメーションがあると Chrome が LCP 候補と
+           *     みなすのをアニメーション完了まで待つ(最大 ~2.5s の遅延)
+           *   - hydration で key={0} が remount されると opacity:0 から再スタートし
+           *     JS ロード時間(~2s) + アニメーション(0.25s) ≈ 2.3s の遅延が生じる
+           * idx > 0 のギャラリー切り替え時はフェードで滑らかに見せる。
            */
           <Image
             key={idx}
             fill
             src={images[idx]}
             alt={`${catName} の写真 ${idx + 1}`}
-            className="object-contain animate-photo-fade"
+            className={`object-contain${idx === 0 ? "" : " animate-photo-fade"}`}
             sizes="(max-width: 768px) calc(100vw - 32px), 736px"
             preload={idx === 0}
             loading="eager"
