@@ -60,7 +60,6 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
             className="object-contain animate-photo-fade"
             sizes="(max-width: 768px) calc(100vw - 32px), 736px"
             preload={idx === 0}
-            fetchPriority={idx === 0 ? "high" : "auto"}
             loading="eager"
             quality={60}
           />
