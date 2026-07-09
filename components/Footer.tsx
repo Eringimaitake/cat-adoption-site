@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const navLinks = [
@@ -20,18 +21,12 @@ export default function Footer() {
           {/* Brand */}
           <div className="max-w-xs">
             <div className="flex items-center gap-2 text-xl font-bold mb-3">
-              <span>🐱</span>
+              <Image src="/icon.png" alt="" width={28} height={28} className="invert" />
               <span className="text-peach-light">ねこネコ市保護猫譲渡会</span>
             </div>
             <p className="text-sm text-latte-light leading-relaxed">
               保護主の方々の活動を支援し、保護された猫たちが新しい家族と出会えるようサポートしています。一匹でも多くの猫が幸せな生活を送れますように。
             </p>
-            <div className="flex gap-3 mt-4 text-xl">
-              <span title="保護猫">🐾</span>
-              <span title="里親">🏠</span>
-              <span title="猫">🐱</span>
-              <span title="愛情">💕</span>
-            </div>
           </div>
 
           {/* Nav */}

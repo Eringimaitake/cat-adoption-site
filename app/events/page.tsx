@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { supabase, formatEventDateParts, type CatEvent } from "@/lib/supabase";
 import { baseOG } from "@/lib/og";
@@ -75,7 +76,19 @@ export default async function EventsPage() {
                       🎉 次回開催
                     </div>
                   )}
-                  <div className={`h-1.5 ${accent}`} />
+                  {ev.image_url ? (
+                    <div className="relative w-full h-44 overflow-hidden">
+                      <Image
+                        src={ev.image_url}
+                        alt={ev.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 768px"
+                      />
+                    </div>
+                  ) : (
+                    <div className={`h-1.5 ${accent}`} />
+                  )}
                   <div className="p-6 flex flex-col sm:flex-row gap-6">
                     {/* Date badge */}
                     <div className={`${accent} text-white rounded-2xl text-center px-5 py-4 min-w-[90px] self-start shadow-sm`}>

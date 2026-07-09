@@ -45,6 +45,7 @@ export type CatEvent = {
   event_date: string // "YYYY-MM-DD"
   location: string | null
   event_time: string | null
+  image_url: string | null
   created_at: string
 }
 

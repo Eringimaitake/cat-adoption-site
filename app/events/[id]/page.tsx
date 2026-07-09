@@ -40,7 +40,7 @@ export async function generateMetadata({
   const { id } = await params;
   const { data } = await supabase
     .from("events")
-    .select("title, event_date, location, event_time")
+    .select("title, event_date, location, event_time, image_url")
     .eq("id", id)
     .single();
 
@@ -69,6 +69,9 @@ export async function generateMetadata({
       ...baseOG,
       title,
       description: desc,
+      ...(data?.image_url && {
+        images: [{ url: data.image_url, width: 1200, height: 630, alt: title }],
+      }),
     },
   };
 }
@@ -114,6 +117,22 @@ export default async function EventDetailPage({
           <h1 className="text-2xl font-bold leading-relaxed">{event.title}</h1>
         </div>
       </section>
+
+      {/* Event image (optional) */}
+      {event.image_url && (
+        <section className="max-w-3xl mx-auto px-4 mt-6">
+          <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-sm bg-ivory">
+            <Image
+              src={event.image_url}
+              alt={event.title}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+            />
+          </div>
+        </section>
+      )}
 
       {/* Event info */}
       <section className="max-w-3xl mx-auto px-4 mt-6">
@@ -163,6 +182,7 @@ export default async function EventDetailPage({
               url: SITE_URL,
             },
             url: `${SITE_URL}/events/${event.id}`,
+            ...(event.image_url && { image: event.image_url }),
             ...(event.event_time && {
               description: `開催時間：${event.event_time}`,
             }),

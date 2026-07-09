@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -26,7 +27,13 @@ export default function Header() {
       <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0 group">
-          <span className="text-2xl group-hover:animate-float-sm transition-all">🐱</span>
+          <Image
+            src="/icon.png"
+            alt=""
+            width={32}
+            height={32}
+            className="group-hover:animate-float-sm transition-all"
+          />
           <span className="font-bold text-lg text-caramel group-hover:text-peach transition-colors">
             ねこネコ市保護猫譲渡会
           </span>
