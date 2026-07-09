@@ -27,7 +27,8 @@ const fieldClass =
 export default function ContactForm() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const validate = () => {
     const e: Partial<Record<keyof FormState, string>> = {};
@@ -54,17 +55,45 @@ export default function ContactForm() {
       setErrors((prev) => ({ ...prev, [key]: undefined }));
     };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
     }
-    setSubmitted(true);
+
+    setStatus("loading");
+    setApiError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          category: form.category,
+          message: form.message.trim(),
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setApiError(data.error ?? "送信に失敗しました。しばらく経ってからお試しください。");
+        setStatus("error");
+        return;
+      }
+
+      setStatus("success");
+    } catch {
+      setApiError("ネットワークエラーが発生しました。しばらく経ってからお試しください。");
+      setStatus("error");
+    }
   };
 
-  if (submitted) {
+  if (status === "success") {
     return (
       <div className="text-center py-16 px-4">
         <div className="inline-block bg-white rounded-4xl shadow-md border border-caramel-light p-10 max-w-md">
@@ -88,6 +117,14 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-5">
+      {/* API error banner */}
+      {status === "error" && apiError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl text-sm flex items-start gap-2">
+          <span className="shrink-0 mt-0.5">⚠️</span>
+          <span>{apiError}</span>
+        </div>
+      )}
+
       {/* Name */}
       <div>
         <label className="block text-sm font-semibold text-latte mb-1.5">
@@ -185,9 +222,10 @@ export default function ContactForm() {
 
       <button
         type="submit"
-        className="w-full bg-peach text-white font-bold py-3.5 rounded-full shadow hover:bg-peach-dark hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 text-sm"
+        disabled={status === "loading"}
+        className="w-full bg-peach text-white font-bold py-3.5 rounded-full shadow hover:bg-peach-dark hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 text-sm disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow"
       >
-        ✉️ 送信する
+        {status === "loading" ? "送信中..." : "✉️ 送信する"}
       </button>
     </form>
   );
