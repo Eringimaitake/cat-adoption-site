@@ -3,10 +3,15 @@ import Link from "next/link";
 import QaAccordion from "./QaAccordion";
 import { categories } from "./data";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "猫のお悩みQ&A",
+  title: "保護猫・飼育のよくある質問Q&A",
   description:
-    "新米里親さん・猫の飼育に悩む方へ。よくあるお悩みにやさしく回答します。",
+    "保護猫を迎えた新米里親さんや、猫の飼育に悩む方のためのQ&Aページです。トイレのしつけ・夜鳴き・先住猫との関係・脱走防止・健康管理など、よくあるお悩みにわかりやすくお答えします。猫との生活が少しでも楽しくなるヒントが見つかれば幸いです。",
+  alternates: {
+    canonical: `${SITE_URL}/qa`,
+  },
 };
 
 const faqJsonLd = {

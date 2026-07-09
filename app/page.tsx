@@ -12,9 +12,12 @@ import {
 } from "@/lib/supabase";
 
 export const metadata: Metadata = {
-  title: { absolute: "ねこネコ市保護猫譲渡会" },
+  title: { absolute: "ねこネコ市保護猫譲渡会｜保護猫の里親募集・譲渡会情報" },
   description:
-    "保護主の方々と里親希望の方をつなぐ保護猫譲渡会サイト。里親募集中の猫の紹介・譲渡会情報・里親になる流れをご案内します。",
+    "ねこネコ市保護猫譲渡会は、保護主の方々と里親希望の方をつなぐ保護猫の里親募集サイトです。里親を待つ保護猫のプロフィール紹介、定期開催の譲渡会スケジュール、里親になるまでの流れをわかりやすく解説。4年間の活動で160匹以上の猫たちが新しい家族に出会いました。まずはお気軽にご覧ください。",
+  alternates: {
+    canonical: SITE_URL,
+  },
 };
 
 // force-dynamic ensures "today" and the latest cats/events are always evaluated fresh

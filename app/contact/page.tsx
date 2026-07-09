@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import ContactForm from "./ContactForm";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "お問い合わせ",
+  title: "お問い合わせ・里親申込み・保護のご相談",
   description:
-    "保護猫の里親希望・譲渡会への参加・保護相談など、お気軽にお問い合わせください。メールにて3営業日以内にご返信いたします。",
+    "保護猫の里親希望・譲渡会への参加申込み・猫の保護相談など、ご不明な点はお気軽にお問い合わせください。メールにて3営業日以内にご返信いたします（土日祝除く）。フォームからのお問い合わせのほか、メールでの直接ご連絡も受け付けています。",
+  alternates: {
+    canonical: `${SITE_URL}/contact`,
+  },
 };
 
 const contactInfo = [

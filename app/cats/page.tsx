@@ -3,10 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { supabase, formatGender, type Cat } from "@/lib/supabase";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "猫を探す",
+  title: "里親募集中の保護猫一覧",
   description:
-    "里親を募集している保護猫たちをご紹介。年齢・性別・性格など詳しいプロフィールを掲載。あなたにぴったりの猫を見つけてください。",
+    "里親を募集している保護猫のプロフィール一覧です。年齢・性別・性格・健康状態など詳しい情報を掲載。ワクチン接種済み・去勢避妊済みの子も多数います。あなたにぴったりの猫が見つかったら、お気軽にお問い合わせください。定期開催の譲渡会で直接会いに来ることもできます。",
+  alternates: {
+    canonical: `${SITE_URL}/cats`,
+  },
 };
 
 // force-dynamic ensures cats data is always fetched fresh from Supabase

@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "里親・保護ガイド",
+  title: "里親になりたい方・猫を保護された方へのガイド",
   description:
-    "猫を迎えたい方・猫を保護されている方それぞれへの専用ガイドページです。",
+    "保護猫を迎えたい方のための里親ガイドと、猫を保護された方向けのサポート情報をまとめています。迎える前の準備チェックリスト、必要なグッズ、掲載依頼の流れなど、はじめての方にもわかりやすく解説。ご不明な点はいつでもお気軽にお問い合わせください。",
+  alternates: {
+    canonical: `${SITE_URL}/guide`,
+  },
 };
 
 const adoptChecklist = [

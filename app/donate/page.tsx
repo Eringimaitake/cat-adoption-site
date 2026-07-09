@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "ご支援のお願い",
-  description: "保護猫活動を継続するための支援物資（Amazonウィッシュリスト）のご案内です。",
+  title: "保護猫活動へのご支援・物資寄付のお願い",
+  description:
+    "ねこネコ市保護猫譲渡会の活動を応援していただける方へ。猫たちの日常に必要なフードやケア用品など、Amazonウィッシュリストから支援物資をお届けいただけます。継続的な保護活動を支えるため、皆さまのあたたかいご支援をよろしくお願いいたします。",
+  alternates: {
+    canonical: `${SITE_URL}/donate`,
+  },
 };
 
 // ── 仮データ（正式な情報が決まったらここを書き換えてください） ──────────

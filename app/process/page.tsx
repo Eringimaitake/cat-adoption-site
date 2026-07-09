@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "譲渡の流れ",
+  title: "保護猫の里親になるまでの流れ｜3ステップで解説",
   description:
-    "保護猫の里親になるまでの流れを3ステップで解説。お申込みからトライアル、正式譲渡まで丁寧にご案内します。初めての方もご安心ください。",
+    "ねこネコ市保護猫譲渡会で保護猫の里親になるまでの流れを3ステップで解説します。お申込み・面談から、1〜2週間のトライアル期間を経て正式譲渡まで、スタッフが一貫してサポート。初めて猫を迎える方も安心してお申込みください。",
+  alternates: {
+    canonical: `${SITE_URL}/process`,
+  },
 };
 
 const steps = [

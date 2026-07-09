@@ -44,13 +44,26 @@ export async function generateMetadata({
     .single();
 
   const title = data?.title ?? "譲渡会の詳細";
-  const desc = data
-    ? `${data.event_date}開催「${data.title}」。場所：${data.location ?? "未定"}、時間：${data.event_time ?? "未定"}。保護猫たちに会いに来てください。`
-    : "保護猫の譲渡会情報です。";
+
+  let desc: string;
+  if (!data) {
+    desc = "保護猫の譲渡会情報です。ねこネコ市保護猫譲渡会が開催する譲渡会にぜひご参加ください。";
+  } else {
+    const [year, month, day] = data.event_date.split("-");
+    const dateStr = `${year}年${Number(month)}月${Number(day)}日`;
+    const parts = [`${dateStr}開催の保護猫譲渡会「${data.title}」`];
+    if (data.location) parts.push(`会場：${data.location}`);
+    if (data.event_time) parts.push(`時間：${data.event_time}`);
+    parts.push("保護猫たちに直接会って里親を検討していただける貴重な機会です。初めての方もお気軽にご参加ください");
+    desc = parts.join("。") + "。";
+  }
 
   return {
     title,
     description: desc,
+    alternates: {
+      canonical: `${SITE_URL}/events/${id}`,
+    },
   };
 }
 

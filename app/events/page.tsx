@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { supabase, formatEventDateParts, type CatEvent } from "@/lib/supabase";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "譲渡会情報",
+  title: "保護猫の譲渡会・開催スケジュール",
   description:
-    "保護猫の譲渡会の開催情報をお知らせします。直接猫たちに会える機会です。ぜひお気軽にご参加ください。",
+    "ねこネコ市保護猫譲渡会が定期開催する譲渡会スケジュール一覧です。保護猫たちに直接会える絶好の機会。参加には事前のお問い合わせと身分証のご持参をお願いしています。初めての方もスタッフが丁寧にご案内しますので、里親を検討中の方はぜひお越しください。",
+  alternates: {
+    canonical: `${SITE_URL}/events`,
+  },
 };
 
 // force-dynamic ensures events data is always fetched fresh from Supabase
