@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase, formatGender, type Cat, type CatEvent } from "@/lib/supabase";
 import { baseOG } from "@/lib/og";
+import EventImage from "./EventImage";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -118,19 +119,10 @@ export default async function EventDetailPage({
         </div>
       </section>
 
-      {/* Event image (optional) */}
+      {/* Event image (optional) — click/tap to enlarge */}
       {event.image_url && (
         <section className="max-w-3xl mx-auto px-4 mt-6">
-          <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-sm bg-ivory">
-            <Image
-              src={event.image_url}
-              alt={event.title}
-              fill
-              className="object-contain"
-              sizes="(max-width: 768px) 100vw, 768px"
-              priority
-            />
-          </div>
+          <EventImage src={event.image_url} alt={event.title} />
         </section>
       )}
 

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import Lightbox from "@/components/Lightbox";
 
 // Gradient classes listed explicitly so Tailwind's scanner includes them
 const COLOR_THEMES: Record<string, { from: string; to: string }> = {
@@ -24,6 +25,7 @@ type Props = {
 
 export default function PhotoGallery({ images, catName, emoji, colorTheme }: Props) {
   const [current, setCurrent] = useState(0);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   const { from, to } = COLOR_THEMES[colorTheme] ?? COLOR_THEMES.orange;
   const hasImages = images.length > 0;
@@ -45,31 +47,40 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
         `}
       >
         {hasImages ? (
-          /*
-           * idx === 0 の場合はアニメーションなし:
-           *   - SSR → opacity:0 スタートのアニメーションがあると Chrome が LCP 候補と
-           *     みなすのをアニメーション完了まで待つ(最大 ~2.5s の遅延)
-           *   - hydration で key={0} が remount されると opacity:0 から再スタートし
-           *     JS ロード時間(~2s) + アニメーション(0.25s) ≈ 2.3s の遅延が生じる
-           * idx > 0 のギャラリー切り替え時はフェードで滑らかに見せる。
-           */
-          <Image
-            key={idx}
-            fill
-            src={images[idx]}
-            alt={`${catName} の写真 ${idx + 1}`}
-            className={`object-contain${idx === 0 ? "" : " animate-photo-fade"}`}
-            sizes="(max-width: 768px) calc(100vw - 32px), 736px"
-            preload={idx === 0}
-            loading="eager"
-            quality={60}
-          />
+          <>
+            {/*
+             * idx === 0 の場合はアニメーションなし:
+             *   - SSR → opacity:0 スタートのアニメーションがあると Chrome が LCP 候補と
+             *     みなすのをアニメーション完了まで待つ(最大 ~2.5s の遅延)
+             *   - hydration で key={0} が remount されると opacity:0 から再スタートし
+             *     JS ロード時間(~2s) + アニメーション(0.25s) ≈ 2.3s の遅延が生じる
+             * idx > 0 のギャラリー切り替え時はフェードで滑らかに見せる。
+             */}
+            <Image
+              key={idx}
+              fill
+              src={images[idx]}
+              alt={`${catName} の写真 ${idx + 1}`}
+              className={`object-contain${idx === 0 ? "" : " animate-photo-fade"}`}
+              sizes="(max-width: 768px) calc(100vw - 32px), 736px"
+              preload={idx === 0}
+              loading="eager"
+              quality={60}
+            />
+            {/* Invisible button covering the image — opens lightbox on click */}
+            <button
+              type="button"
+              className="absolute inset-0 z-[1] cursor-zoom-in"
+              onClick={() => setLightboxSrc(images[idx])}
+              aria-label="写真を拡大表示"
+            />
+          </>
         ) : (
           /* Emoji fallback when no image_url is stored */
           <span className="text-[9rem] drop-shadow-lg select-none">{emoji}</span>
         )}
 
-        {/* Prev / Next arrows — only rendered for multiple images */}
+        {/* Prev / Next arrows — z-[2] to sit above the lightbox trigger */}
         {hasMultiple && (
           <>
             <button
@@ -77,7 +88,7 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
                 setCurrent((c) => (c - 1 + images.length) % images.length)
               }
               className="
-                absolute left-3 top-1/2 -translate-y-1/2
+                absolute left-3 top-1/2 -translate-y-1/2 z-[2]
                 w-10 h-10 rounded-full
                 bg-white/75 hover:bg-white
                 text-latte text-2xl
@@ -93,7 +104,7 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
                 setCurrent((c) => (c + 1) % images.length)
               }
               className="
-                absolute right-3 top-1/2 -translate-y-1/2
+                absolute right-3 top-1/2 -translate-y-1/2 z-[2]
                 w-10 h-10 rounded-full
                 bg-white/75 hover:bg-white
                 text-latte text-2xl
@@ -110,7 +121,7 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
         {/* Photo count badge */}
         {hasMultiple && (
           <div className="
-            absolute bottom-3 right-3
+            absolute bottom-3 right-3 z-[2]
             bg-black/40 backdrop-blur-sm
             text-white text-xs font-medium
             px-2.5 py-1 rounded-full
@@ -156,6 +167,15 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
             </button>
           ))}
         </div>
+      )}
+
+      {/* Lightbox overlay */}
+      {lightboxSrc && (
+        <Lightbox
+          src={lightboxSrc}
+          alt={`${catName} の写真`}
+          onClose={() => setLightboxSrc(null)}
+        />
       )}
     </div>
   );
