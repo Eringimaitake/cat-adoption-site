@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -38,6 +39,9 @@ export const metadata: Metadata = {
     icon: [{ url: "/favicon.ico", type: "image/x-icon", sizes: "16x16 32x32 48x48" }],
     apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
+  verification: {
+    google: "hAZeVGox1LiM2DgTFPn_NS_Ijrp4dXefywoPSnSXB4U",
+  },
 };
 
 export default function RootLayout({
@@ -52,6 +56,9 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
+      {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+      )}
     </html>
   );
 }
