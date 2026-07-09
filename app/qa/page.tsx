@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import QaAccordion from "./QaAccordion";
-import { categories } from "./data";
+import { supabase } from "@/lib/supabase";
 import { baseOG } from "@/lib/og";
+import { CATEGORY_STYLE, DEFAULT_STYLE } from "./categoryStyles";
+import QaAccordion from "./QaAccordion";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "保護猫・新米里親のよくある質問Q&A｜飼育トラブル解決・トイレのしつけ・夜鳴き対策など",
@@ -21,19 +24,41 @@ export const metadata: Metadata = {
   },
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: categories.flatMap((cat) =>
-    cat.items.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
-    }))
-  ),
-};
+export default async function QaPage() {
+  const { data } = await supabase
+    .from("qa")
+    .select("id, question, answer, category, display_order, created_at, updated_at")
+    .order("display_order", { ascending: true });
 
-export default function QaPage() {
+  const items = data ?? [];
+
+  // Group by category preserving display_order-based category order
+  const grouped: { label: string; items: typeof items }[] = [];
+  const catMap = new Map<string, typeof items>();
+  for (const item of items) {
+    const cat = item.category ?? "未分類";
+    const existing = catMap.get(cat);
+    if (existing) {
+      existing.push(item);
+    } else {
+      catMap.set(cat, [item]);
+    }
+  }
+  for (const [label, catItems] of catMap.entries()) {
+    grouped.push({ label, items: catItems });
+  }
+
+  // JSON-LD uses all items regardless of category grouping (Task 4)
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  };
+
   return (
     <>
       {/* ── Page header ── */}
@@ -49,44 +74,47 @@ export default function QaPage() {
         </p>
       </section>
 
-      {/* ── Category quick-nav ── */}
-      <section className="py-4 px-4 bg-white border-b border-caramel-light sticky top-16 z-40">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {categories.map((cat) => (
-              <a
-                key={cat.id}
-                href={`#${cat.id}`}
-                className={`shrink-0 inline-flex items-center gap-1.5 ${cat.tagBg} ${cat.tagText} text-xs font-semibold px-3 py-1.5 rounded-full hover:opacity-80 transition-opacity whitespace-nowrap`}
-              >
-                <span>{cat.icon}</span>
-                {cat.label}
-              </a>
-            ))}
+      {/* ── Category navigation tags ── */}
+      {grouped.length > 0 && (
+        <section className="py-8 px-4 bg-white border-b border-caramel-light">
+          <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+            {grouped.map(({ label }, i) => {
+              const style = CATEGORY_STYLE[label] ?? DEFAULT_STYLE;
+              return (
+                <a
+                  key={label}
+                  href={`#cat-${i}`}
+                  className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full ${style.tagBg} ${style.tagText} font-semibold text-sm hover:opacity-75 transition-opacity`}
+                >
+                  <span>{style.icon}</span>
+                  <span>{label}</span>
+                </a>
+              );
+            })}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── Q&A Accordion ── */}
       <section className="py-12 px-4">
         <div className="max-w-3xl mx-auto">
-          <QaAccordion />
+          <QaAccordion groups={grouped} />
         </div>
       </section>
 
-      {/* FAQPage 構造化データ */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      {/* FAQPage 構造化データ（全件・カテゴリ問わず） */}
+      {items.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
 
       {/* ── CTA ── */}
       <section className="py-12 px-4 bg-gradient-to-br from-paw-light to-peach-pale text-center">
         <div className="max-w-md mx-auto">
           <div className="text-5xl mb-4 animate-float inline-block">🐱</div>
-          <h2 className="text-xl font-bold text-latte mb-3">
-            解決しない場合はご相談を
-          </h2>
+          <h2 className="text-xl font-bold text-latte mb-3">解決しない場合はご相談を</h2>
           <p className="text-latte-light text-sm leading-relaxed mb-7">
             ここに載っていない場合や、もっと詳しく相談したい場合は、お気軽にお問い合わせください。スタッフが丁寧にお答えします。
           </p>

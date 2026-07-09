@@ -63,6 +63,16 @@ export function formatEventDateParts(eventDate: string) {
   return { year, month, day, dayOfWeek };
 }
 
+export type QaEntry = {
+  id: number
+  question: string
+  answer: string
+  category: string
+  display_order: number
+  created_at: string
+  updated_at: string
+}
+
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

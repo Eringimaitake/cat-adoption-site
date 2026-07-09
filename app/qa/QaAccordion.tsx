@@ -1,82 +1,91 @@
 "use client";
 
 import { useState } from "react";
-import { categories } from "./data";
+import type { QaEntry } from "@/lib/supabase";
+import { CATEGORY_STYLE, DEFAULT_STYLE } from "./categoryStyles";
 
-export default function QaAccordion() {
-  const [openId, setOpenId] = useState<string | null>(null);
+type CategoryGroup = { label: string; items: QaEntry[] };
+type Props = { groups: CategoryGroup[] };
 
-  const toggle = (id: string) => setOpenId((prev) => (prev === id ? null : id));
+export default function QaAccordion({ groups }: Props) {
+  const [openId, setOpenId] = useState<number | null>(null);
+
+  const hasItems = groups.some((g) => g.items.length > 0);
+  if (!hasItems) {
+    return (
+      <p className="text-center text-latte-light text-sm py-12 bg-white rounded-2xl border border-caramel-light">
+        Q&Aはまだ登録されていません。
+      </p>
+    );
+  }
 
   return (
     <div className="space-y-10">
-      {categories.map((cat) => (
-        <div key={cat.id} id={cat.id} className="scroll-mt-20">
-          {/* Category header */}
-          <div className="flex items-center gap-3 mb-4">
+      {groups.map(({ label, items }, i) => {
+        const style = CATEGORY_STYLE[label] ?? DEFAULT_STYLE;
+        return (
+          <div
+            key={label}
+            id={`cat-${i}`}
+            style={{ scrollMarginTop: "80px" }}
+          >
+            {/* Section label */}
             <div
-              className={`w-11 h-11 rounded-2xl ${cat.tagBg} flex items-center justify-center text-2xl shadow-sm`}
+              className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${style.tagBg} ${style.tagText} font-semibold text-sm mb-4`}
             >
-              {cat.icon}
+              <span>{style.icon}</span>
+              <span>{label}</span>
             </div>
-            <h2 className="text-xl font-bold text-latte">{cat.label}</h2>
-            <span
-              className={`text-xs font-semibold ${cat.tagBg} ${cat.tagText} px-2.5 py-0.5 rounded-full`}
-            >
-              {cat.items.length}件
-            </span>
-          </div>
 
-          {/* Accordion items */}
-          <div className="space-y-3">
-            {cat.items.map((item) => {
-              const isOpen = openId === item.id;
-              return (
-                <div
-                  key={item.id}
-                  className={`bg-white rounded-2xl overflow-hidden border-l-4 ${cat.borderColor} shadow-sm hover:shadow-md transition-shadow`}
-                >
-                  <button
-                    type="button"
-                    onClick={() => toggle(item.id)}
-                    className="w-full flex items-start gap-3 px-5 py-4 text-left"
-                    aria-expanded={isOpen}
+            {/* Accordion items */}
+            <div className="space-y-3">
+              {items.map((item) => {
+                const isOpen = openId === item.id;
+                return (
+                  <div
+                    key={item.id}
+                    className={`bg-white rounded-2xl overflow-hidden border-l-4 ${style.border} shadow-sm hover:shadow-md transition-shadow`}
                   >
-                    <span
-                      className={`w-7 h-7 rounded-xl ${cat.tagBg} ${cat.tagText} text-xs font-black flex items-center justify-center shrink-0 mt-0.5`}
+                    <button
+                      type="button"
+                      onClick={() => setOpenId((prev) => (prev === item.id ? null : item.id))}
+                      className="w-full flex items-start gap-3 px-5 py-4 text-left"
+                      aria-expanded={isOpen}
                     >
-                      Q
-                    </span>
-                    <span className="flex-1 font-semibold text-latte text-sm leading-snug">
-                      {item.q}
-                    </span>
-                    <span
-                      className={`text-latte-light text-lg font-light shrink-0 transition-transform duration-200 ${
-                        isOpen ? "rotate-45" : "rotate-0"
-                      }`}
-                    >
-                      +
-                    </span>
-                  </button>
+                      <span className="w-7 h-7 rounded-xl bg-paw-light text-paw text-xs font-black flex items-center justify-center shrink-0 mt-0.5">
+                        Q
+                      </span>
+                      <span className="flex-1 font-semibold text-latte text-sm leading-snug">
+                        {item.question}
+                      </span>
+                      <span
+                        className={`text-latte-light text-lg font-light shrink-0 transition-transform duration-200 ${
+                          isOpen ? "rotate-45" : "rotate-0"
+                        }`}
+                      >
+                        +
+                      </span>
+                    </button>
 
-                  {isOpen && (
-                    <div className="px-5 pb-5">
-                      <div className="flex items-start gap-3">
-                        <span className="w-7 h-7 rounded-xl bg-sage-light text-sage text-xs font-black flex items-center justify-center shrink-0 mt-0.5">
-                          A
-                        </span>
-                        <p className="text-sm text-latte-light leading-relaxed">
-                          {item.a}
-                        </p>
+                    {isOpen && (
+                      <div className="px-5 pb-5">
+                        <div className="flex items-start gap-3">
+                          <span className="w-7 h-7 rounded-xl bg-sage-light text-sage text-xs font-black flex items-center justify-center shrink-0 mt-0.5">
+                            A
+                          </span>
+                          <p className="text-sm text-latte-light leading-relaxed whitespace-pre-wrap">
+                            {item.answer}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
