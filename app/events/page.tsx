@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { supabase, formatEventDateParts, type CatEvent } from "@/lib/supabase";
+import { baseOG } from "@/lib/og";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: "保護猫の譲渡会・開催スケジュール",
+  title: "保護猫の定期譲渡会スケジュール・開催情報一覧｜参加申込み受付中・当日身分証持参",
   description:
     "ねこネコ市保護猫譲渡会が定期開催する譲渡会スケジュール一覧です。保護猫たちに直接会える絶好の機会。参加には事前のお問い合わせと身分証のご持参をお願いしています。初めての方もスタッフが丁寧にご案内しますので、里親を検討中の方はぜひお越しください。",
+  openGraph: {
+    ...baseOG,
+    title: "保護猫の譲渡会スケジュール一覧",
+    description:
+      "ねこネコ市保護猫譲渡会が定期開催する譲渡会スケジュールです。保護猫たちに直接会える貴重な機会。初めての方もスタッフが丁寧にご案内します。参加には事前のお問い合わせと身分証のご持参をお願いしています。",
+  },
   alternates: {
     canonical: `${SITE_URL}/events`,
   },

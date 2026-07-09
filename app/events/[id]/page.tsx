@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase, formatGender, type Cat, type CatEvent } from "@/lib/supabase";
+import { baseOG } from "@/lib/og";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -63,6 +64,11 @@ export async function generateMetadata({
     description: desc,
     alternates: {
       canonical: `${SITE_URL}/events/${id}`,
+    },
+    openGraph: {
+      ...baseOG,
+      title,
+      description: desc,
     },
   };
 }

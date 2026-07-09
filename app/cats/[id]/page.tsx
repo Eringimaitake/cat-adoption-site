@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase, formatGender, type Cat } from "@/lib/supabase";
+import { baseOG } from "@/lib/og";
 import PhotoGallery from "./PhotoGallery";
 import AdoptionSection from "./AdoptionSection";
 
@@ -44,8 +45,10 @@ export async function generateMetadata({
   const name = data?.name ?? "猫の詳細";
 
   let desc: string;
+  let searchTitle: string;
   if (!data) {
     desc = "里親を募集している保護猫です。詳しいプロフィールをご覧ください。";
+    searchTitle = "保護猫の詳細プロフィール";
   } else {
     const genderStr = data.gender ? formatGender(data.gender) : null;
     const ageGender = [data.age, genderStr].filter(Boolean).join("・");
@@ -59,26 +62,23 @@ export async function generateMetadata({
       ? `${data.location}在住の保護主が里親を募集しています`
       : "里親を募集しています";
     desc = [intro, body, location].filter(Boolean).join("。") + "。";
+    searchTitle = data.location
+      ? `${name}｜里親募集中の保護猫プロフィール・${data.location}在住の保護主より`
+      : `${name}｜里親募集中の保護猫プロフィール`;
   }
 
-  // 猫固有の写真がある場合のみ openGraph を設定して og:image を上書き。
-  // 写真なしの場合は openGraph を省略し layout の /top_picture.jpg を継承する。
   return {
-    title: name,
+    title: searchTitle,
     description: desc,
     alternates: {
       canonical: `${SITE_URL}/cats/${id}`,
     },
-    ...(data?.image_url && {
-      openGraph: {
-        type: "website",
-        locale: "ja_JP",
-        siteName: "ねこネコ市保護猫譲渡会",
-        title: `${name}（里親募集中）`,
-        description: desc,
-        images: [{ url: data.image_url, alt: name }],
-      },
-    }),
+    openGraph: {
+      ...baseOG,
+      title: `${name}（里親募集中）`,
+      description: desc,
+      ...(data?.image_url && { images: [{ url: data.image_url, alt: name }] }),
+    },
   };
 }
 

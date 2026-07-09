@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { baseOG } from "@/lib/og";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 import {
@@ -12,9 +13,15 @@ import {
 } from "@/lib/supabase";
 
 export const metadata: Metadata = {
-  title: { absolute: "ねこネコ市保護猫譲渡会｜保護猫の里親募集・譲渡会情報" },
+  title: { absolute: "保護猫の里親募集・定期譲渡会を開催中｜ねこネコ市保護猫譲渡会｜千葉エリア活動・4年間で160匹が巣立ち" },
   description:
     "ねこネコ市保護猫譲渡会は、保護主の方々と里親希望の方をつなぐ保護猫の里親募集サイトです。里親を待つ保護猫のプロフィール紹介、定期開催の譲渡会スケジュール、里親になるまでの流れをわかりやすく解説。4年間の活動で160匹以上の猫たちが新しい家族に出会いました。まずはお気軽にご覧ください。",
+  openGraph: {
+    ...baseOG,
+    title: "ねこネコ市｜里親募集中の猫たちに会いに来ませんか",
+    description:
+      "ねこネコ市保護猫譲渡会は保護猫の里親募集サイトです。里親を待つ保護猫のプロフィール・定期開催の譲渡会スケジュール・里親になるまでの流れをご案内しています。4年間で160匹以上が新しい家族に出会いました。",
+  },
   alternates: {
     canonical: SITE_URL,
   },

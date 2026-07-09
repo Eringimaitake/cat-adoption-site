@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { baseOG } from "@/lib/og";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: "保護猫の里親になるまでの流れ｜3ステップで解説",
+  title: "保護猫の里親になるまでの3ステップ｜申込みからトライアル・正式譲渡まで丁寧にサポートします",
   description:
     "ねこネコ市保護猫譲渡会で保護猫の里親になるまでの流れを3ステップで解説します。お申込み・面談から、1〜2週間のトライアル期間を経て正式譲渡まで、スタッフが一貫してサポート。初めて猫を迎える方も安心してお申込みください。",
+  openGraph: {
+    ...baseOG,
+    title: "保護猫の里親になるまでの流れ",
+    description:
+      "ねこネコ市保護猫譲渡会で里親になるまでの流れを3ステップで解説。お申込みから面談、1〜2週間のトライアルを経て正式譲渡まで、スタッフが一貫サポートします。初めての方でも安心してお申込みいただけます。",
+  },
   alternates: {
     canonical: `${SITE_URL}/process`,
   },

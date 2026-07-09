@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
+import { baseOG } from "@/lib/og";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: "保護猫活動へのご支援・物資寄付のお願い",
+  title: "保護猫活動へのご支援・Amazonウィッシュリストで支援物資の寄付をお願いします",
   description:
-    "ねこネコ市保護猫譲渡会の活動を応援していただける方へ。猫たちの日常に必要なフードやケア用品など、Amazonウィッシュリストから支援物資をお届けいただけます。継続的な保護活動を支えるため、皆さまのあたたかいご支援をよろしくお願いいたします。",
+    "ねこネこ市保護猫譲渡会の活動を応援していただける方へ。猫たちの日常に必要なフードやケア用品など、Amazonウィッシュリストから支援物資をお届けいただけます。継続的な保護活動を支えるため、皆さまのあたたかいご支援をよろしくお願いいたします。",
+  openGraph: {
+    ...baseOG,
+    title: "保護猫活動への物資支援のお願い",
+    description:
+      "ねこネコ市保護猫譲渡会の活動を応援していただける方へ。猫の日常に必要なフードやケア用品をAmazonウィッシュリストからお届けいただけます。継続的な保護活動を支えるため、皆さまのあたたかいご支援をよろしくお願いします。",
+  },
   alternates: {
     canonical: `${SITE_URL}/donate`,
   },
