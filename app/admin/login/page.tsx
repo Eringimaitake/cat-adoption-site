@@ -12,11 +12,11 @@ export default function AdminLoginPage() {
   const [checking, setChecking] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // すでにログイン済みなら /admin/qa へ
+  // すでにログイン済みなら /admin へ
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        router.replace("/admin/qa");
+        router.replace("/admin");
       } else {
         setChecking(false);
       }
@@ -32,7 +32,7 @@ export default function AdminLoginPage() {
       setError("メールアドレスまたはパスワードが正しくありません");
       setLoading(false);
     } else {
-      router.push("/admin/qa");
+      router.push("/admin");
     }
   }
 

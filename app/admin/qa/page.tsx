@@ -173,8 +173,10 @@ export default function AdminQaPage() {
       {/* ── Admin Header ── */}
       <div className="bg-latte text-ivory px-6 py-4 flex items-center justify-between">
         <div>
-          <p className="text-xs text-latte-light mb-0.5">ねこネコ市保護猫譲渡会</p>
-          <h1 className="text-lg font-bold">Q&A 管理</h1>
+          <a href="/admin" className="text-xs text-latte-light hover:text-ivory transition-colors mb-0.5 inline-block">
+            ← ダッシュボード
+          </a>
+          <h1 className="text-lg font-bold">Q&amp;A 管理</h1>
         </div>
         <div className="flex items-center gap-4">
           <a

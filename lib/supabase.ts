@@ -74,6 +74,18 @@ export type QaEntry = {
   updated_at: string
 }
 
+export type ShopProduct = {
+  id: number
+  name: string
+  description: string | null
+  price: number
+  image_url: string | null
+  is_available: boolean
+  display_order: number
+  created_at: string
+  updated_at: string
+}
+
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
