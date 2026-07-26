@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { supabase, formatGender, type Cat } from "@/lib/supabase";
+import { supabase, formatGender, type Cat, CAT_STATUS_LABEL, CAT_STATUS_BADGE } from "@/lib/supabase";
 import { baseOG } from "@/lib/og";
 import PhotoGallery from "./PhotoGallery";
 import AdoptionSection from "./AdoptionSection";
@@ -12,7 +12,7 @@ export async function generateStaticParams() {
   const { data } = await supabase
     .from("cats")
     .select("id")
-    .eq("is_adopted", false);
+    .in("status", ["available", "trial"]);
   return (data ?? []).map((cat) => ({ id: String(cat.id) }));
 }
 
@@ -231,6 +231,14 @@ export default async function CatDetailPage({
         <div className="mb-5">
           <div className="flex flex-wrap items-center gap-2.5 mb-3">
             <h1 className="text-3xl font-bold text-latte">{cat.name}</h1>
+            {/* Status badge */}
+            <span
+              className={`text-sm font-bold px-3 py-1 rounded-full ${
+                CAT_STATUS_BADGE[cat.status ?? "available"] ?? CAT_STATUS_BADGE.available
+              }`}
+            >
+              {CAT_STATUS_LABEL[cat.status ?? "available"] ?? "募集中"}
+            </span>
             <span className="bg-caramel-light text-latte text-sm font-medium px-3 py-1 rounded-full">
               {cat.age}
             </span>
@@ -363,7 +371,7 @@ export default async function CatDetailPage({
         )}
 
         {/* ── Adoption CTA ── */}
-        <AdoptionSection catName={cat.name} />
+        <AdoptionSection catName={cat.name} status={cat.status} />
       </section>
 
       {/* ItemPage 構造化データ */}

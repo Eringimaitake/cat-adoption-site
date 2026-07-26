@@ -1,11 +1,45 @@
 "use client";
 
 import { useState } from "react";
+import type { CatStatus } from "@/lib/supabase";
 
 const ADOPTION_FORM_URL = "https://forms.gle/NExWo9rVmZTJX1wQ6";
 
-export default function AdoptionSection({ catName }: { catName: string }) {
+type Props = {
+  catName: string;
+  status: CatStatus | string | null;
+};
+
+export default function AdoptionSection({ catName, status }: Props) {
   const [copied, setCopied] = useState(false);
+
+  if (status === "trial") {
+    return (
+      <div className="text-center py-8 px-4 bg-orange-50 rounded-3xl border border-orange-200">
+        <p className="text-3xl mb-3">🐾</p>
+        <p className="text-orange-700 font-bold text-base mb-2">現在トライアル中です</p>
+        <p className="text-orange-600/80 text-sm leading-relaxed">
+          {catName}ちゃんは現在トライアル期間中のため、新たな里親申込は受け付けていません。
+          <br />
+          他にも素敵な子たちがいますので、ぜひ一覧もご覧ください。
+        </p>
+      </div>
+    );
+  }
+
+  if (status === "adopted") {
+    return (
+      <div className="text-center py-8 px-4 bg-sage-light rounded-3xl">
+        <p className="text-3xl mb-3">🎉</p>
+        <p className="text-sage-dark font-bold text-base mb-2">里親が決まりました！</p>
+        <p className="text-sage/80 text-sm leading-relaxed">
+          {catName}ちゃんの里親は決定しています。
+          <br />
+          新しいご家族のもとで幸せに暮らしています。
+        </p>
+      </div>
+    );
+  }
 
   const handleClick = async () => {
     try {

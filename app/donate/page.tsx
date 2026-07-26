@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 // ── 仮データ（正式な情報が決まったらここを書き換えてください） ──────────
-const AMAZON_WISHLIST_URL = "https://www.amazon.jp/hz/wishlist/ls/8JO8SKJJM5E5?ref_=wl_share";
+const AMAZON_WISHLIST_URL = "https://www.amazon.co.jp/hz/wishlist/ls/8JO8SKJJM5E5?ref_=wl_share";
 // ──────────────────────────────────────────────────────────────
 
 export default function DonatePage() {
@@ -69,7 +69,7 @@ export default function DonatePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-peach text-white font-bold px-6 py-3.5 rounded-full shadow hover:bg-peach-dark hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
             >
-              🛒 Amazonウィッシュリストを見る ↗
+              🛒 Amazonほしいものリストから支援する ↗
             </a>
           </div>
         </div>

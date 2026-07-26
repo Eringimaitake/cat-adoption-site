@@ -10,6 +10,8 @@ import {
   formatGender,
   type Cat,
   type CatEvent,
+  CAT_STATUS_LABEL,
+  CAT_STATUS_BADGE,
 } from "@/lib/supabase";
 
 export const metadata: Metadata = {
@@ -68,7 +70,7 @@ export default async function HomePage() {
   const { data: featuredCatsData } = await supabase
     .from("cats")
     .select("*")
-    .eq("is_adopted", false)
+    .in("status", ["available", "trial"])
     .order("created_at", { ascending: false })
     .limit(3);
 
@@ -249,8 +251,15 @@ export default async function HomePage() {
                           {cat.emoji}
                         </span>
                       )}
+                      {/* Status badge */}
+                      <span
+                        className={`absolute top-2.5 left-2.5 z-10 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm ${
+                          CAT_STATUS_BADGE[cat.status ?? "available"] ?? CAT_STATUS_BADGE.available
+                        }`}
+                      >
+                        {CAT_STATUS_LABEL[cat.status ?? "available"] ?? "募集中"}
+                      </span>
                       <span className="absolute bottom-2 right-3 text-xl opacity-20 select-none">🐾</span>
-                      <span className="absolute top-3 left-2 text-sm opacity-15 select-none">🐾</span>
                     </div>
                     <div className="p-4">
                       <p className="font-bold text-latte text-lg mb-1.5">{cat.name}</p>

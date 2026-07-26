@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { supabase, formatGender, type Cat } from "@/lib/supabase";
+import { supabase, formatGender, type Cat, CAT_STATUS_LABEL, CAT_STATUS_BADGE } from "@/lib/supabase";
 import { baseOG } from "@/lib/og";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -45,7 +45,7 @@ export default async function CatsPage() {
   const { data, error } = await supabase
     .from("cats")
     .select("*")
-    .eq("is_adopted", false)
+    .in("status", ["available", "trial"])
     .order("created_at", { ascending: false });
 
   const cats: Cat[] = data ?? [];
@@ -57,13 +57,13 @@ export default async function CatsPage() {
         <span className="absolute top-4 right-8 text-5xl opacity-10">🐾</span>
         <span className="absolute bottom-4 left-6 text-4xl opacity-10">🐾</span>
         <p className="text-paw font-semibold text-sm mb-2">CATS FOR ADOPTION</p>
-        <h1 className="text-3xl font-bold text-latte mb-2">里親募集中の猫たち</h1>
+        <h1 className="text-3xl font-bold text-latte mb-2">猫を探す</h1>
         <p className="text-latte-light text-sm">
           {error ? (
             "データを取得できませんでした"
           ) : (
             <>
-              あなたを待っている猫が
+              募集中・トライアル中の猫が
               <span className="text-peach font-bold mx-1">{cats.length}匹</span>
               います
             </>
@@ -118,12 +118,20 @@ export default async function CatsPage() {
                       </span>
                     )}
                     <span className="absolute bottom-2 right-3 text-xl opacity-20">🐾</span>
-                    <span className="absolute top-2 left-2 text-base opacity-15 -rotate-12">🐾</span>
                   </div>
 
                   {/* Card body */}
                   <div className="p-4">
-                    <p className="font-bold text-latte text-lg mb-1.5">{cat.name}</p>
+                    <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                      <p className="font-bold text-latte text-lg leading-tight">{cat.name}</p>
+                      <span
+                        className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
+                          CAT_STATUS_BADGE[cat.status ?? "available"] ?? CAT_STATUS_BADGE.available
+                        }`}
+                      >
+                        {CAT_STATUS_LABEL[cat.status ?? "available"] ?? "募集中"}
+                      </span>
+                    </div>
                     <div className="flex gap-1.5 mb-2">
                       <span className="text-xs text-latte-light bg-caramel-light px-2 py-0.5 rounded-full">
                         {cat.age}

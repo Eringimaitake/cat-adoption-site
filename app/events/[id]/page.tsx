@@ -90,7 +90,7 @@ export default async function EventDetailPage({
       .from("cats")
       .select("*")
       .eq("event_id", id)
-      .eq("is_adopted", false)
+      .in("status", ["available", "trial"])
       .order("created_at", { ascending: false }),
   ]);
 

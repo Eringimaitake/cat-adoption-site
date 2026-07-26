@@ -1,5 +1,21 @@
 import { createClient } from '@supabase/supabase-js'
 
+// Status values stored in Supabase
+export type CatStatus = 'available' | 'trial' | 'adopted'
+
+export const CAT_STATUS_LABEL: Record<string, string> = {
+  available: '募集中',
+  trial:     'トライアル中',
+  adopted:   '里親決定',
+}
+
+// Tailwind badge classes — listed explicitly so the scanner includes them at build time
+export const CAT_STATUS_BADGE: Record<string, string> = {
+  available: 'bg-pink-100 text-pink-600',
+  trial:     'bg-orange-100 text-orange-700',
+  adopted:   'bg-sage-light text-sage-dark',
+}
+
 export type Cat = {
   id: number
   name: string
@@ -11,6 +27,7 @@ export type Cat = {
   emoji: string
   color_theme: string
   is_adopted: boolean
+  status: CatStatus | null
   created_at: string
   // Profile
   location: string | null
