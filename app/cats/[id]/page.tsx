@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { supabase, formatGender, type Cat, CAT_STATUS_LABEL, CAT_STATUS_BADGE } from "@/lib/supabase";
+import {
+  supabase,
+  formatGender,
+  formatTestResult,
+  hasTestResult,
+  type Cat,
+  CAT_STATUS_LABEL,
+  CAT_STATUS_BADGE,
+} from "@/lib/supabase";
 import { baseOG } from "@/lib/og";
 import PhotoGallery from "./PhotoGallery";
 import AdoptionSection from "./AdoptionSection";
@@ -140,6 +148,31 @@ function StatusBadge({
   );
 }
 
+// FIV / FeLV の検査結果バッジ。値は boolean ではなく文字列なので StatusBadge は使わない。
+function TestResultBadge({ value }: { value: string | null }) {
+  const { label, tone } = formatTestResult(value);
+
+  if (tone === "unknown") {
+    return (
+      <span className="inline-flex items-center text-xs bg-latte-pale text-latte-light font-medium px-3 py-1 rounded-full">
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full ${
+        tone === "negative"
+          ? "bg-sage-light text-sage-dark"
+          : "bg-amber-100 text-amber-700"
+      }`}
+    >
+      {tone === "negative" ? "✓" : "※"} {label}
+    </span>
+  );
+}
+
 function ConditionBadge({ value }: { value: TriState }) {
   if (value === null) {
     return (
@@ -198,8 +231,8 @@ export default async function CatDetailPage({
   const hasHealth =
     cat.has_vaccine !== null ||
     cat.is_neutered !== null ||
-    cat.fiv_status !== null ||
-    cat.felv_status !== null;
+    hasTestResult(cat.fiv_status) ||
+    hasTestResult(cat.felv_status);
   const hasConditions =
     cat.single_applicant_allowed !== null ||
     cat.elderly_applicant_allowed !== null;
@@ -323,23 +356,13 @@ export default async function CatDetailPage({
               {/* fiv_status */}
               <div className="bg-white px-5 py-4">
                 <p className="text-xs text-latte-light mb-2">猫エイズ (FIV)</p>
-                <StatusBadge
-                  value={cat.fiv_status}
-                  trueLabel="陰性"
-                  falseLabel="陽性"
-                  trueIsGood={true}
-                />
+                <TestResultBadge value={cat.fiv_status} />
               </div>
 
               {/* felv_status */}
               <div className="bg-white px-5 py-4">
                 <p className="text-xs text-latte-light mb-2">猫白血病 (FeLV)</p>
-                <StatusBadge
-                  value={cat.felv_status}
-                  trueLabel="陰性"
-                  falseLabel="陽性"
-                  trueIsGood={true}
-                />
+                <TestResultBadge value={cat.felv_status} />
               </div>
             </div>
           </SectionCard>
