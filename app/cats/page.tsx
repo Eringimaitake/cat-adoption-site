@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { supabase, formatGender, type Cat, CAT_STATUS_LABEL, CAT_STATUS_BADGE } from "@/lib/supabase";
+import {
+  supabase,
+  formatGender,
+  coverFocusStyle,
+  type Cat,
+  CAT_STATUS_LABEL,
+  CAT_STATUS_BADGE,
+} from "@/lib/supabase";
 import { baseOG } from "@/lib/og";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -110,6 +117,7 @@ export default async function CatsPage() {
                         src={cat.image_url}
                         alt={cat.name}
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        style={coverFocusStyle(cat.cover_focus_x, cat.cover_focus_y)}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                     ) : (

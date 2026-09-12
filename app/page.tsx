@@ -8,6 +8,7 @@ import {
   supabase,
   formatEventDateParts,
   formatGender,
+  coverFocusStyle,
   type Cat,
   type CatEvent,
   CAT_STATUS_LABEL,
@@ -244,6 +245,7 @@ export default async function HomePage() {
                           src={cat.image_url}
                           alt={cat.name}
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          style={coverFocusStyle(cat.cover_focus_x, cat.cover_focus_y)}
                           sizes="(max-width: 640px) 100vw, 33vw"
                         />
                       ) : (

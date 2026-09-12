@@ -256,6 +256,8 @@ export default async function CatDetailPage({
           catName={cat.name}
           emoji={cat.emoji}
           colorTheme={cat.color_theme}
+          coverFocusX={cat.cover_focus_x}
+          coverFocusY={cat.cover_focus_y}
         />
       </div>
 

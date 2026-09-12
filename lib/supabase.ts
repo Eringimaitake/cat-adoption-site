@@ -43,6 +43,11 @@ export type Cat = {
   // Applicant conditions
   single_applicant_allowed: boolean | null
   elderly_applicant_allowed: boolean | null
+  // Cover photo focal point — Supabase 側は numeric (default 0.5)。
+  // PostgREST からは JSON の数値として返る (例: 0.5)。文字列ではない。
+  // 0.0 = 左端/上端, 0.5 = 中央, 1.0 = 右端/下端。
+  cover_focus_x: number | null
+  cover_focus_y: number | null
   // Character & backstory
   personality: string | null
   rescue_story: string | null
@@ -67,6 +72,29 @@ export type CatEvent = {
   event_time: string | null
   image_url: string | null
   created_at: string
+}
+
+// ── カバー写真の表示位置 (focal point) ──
+// 保護主がアプリで指定した焦点。cover_focus_x / cover_focus_y は numeric カラムで、
+// PostgREST からは JSON の数値 (例: 0.5) として返る。
+// 未設定 (null) や数値でない値は中央 (0.5) にフォールバックする。
+export const COVER_FOCUS_DEFAULT = 0.5;
+
+function toFocusPercent(value: number | null | undefined): number {
+  const n = typeof value === "number" && Number.isFinite(value) ? value : COVER_FOCUS_DEFAULT;
+  // 0〜1 の範囲外の値が入っていても CSS が壊れないようクランプする。
+  const clamped = Math.min(Math.max(n, 0), 1);
+  // 0.1 * 100 が 10.000000000000002 になるため小数第1位で丸める。
+  return Math.round(clamped * 1000) / 10;
+}
+
+// <Image style={...}> にそのまま渡せる object-position を返す。
+// 中央 (0.5, 0.5) の場合は "50% 50%" となり、これまでの表示と変わらない。
+export function coverFocusStyle(
+  x: number | null | undefined,
+  y: number | null | undefined,
+): { objectPosition: string } {
+  return { objectPosition: `${toFocusPercent(x)}% ${toFocusPercent(y)}%` };
 }
 
 // ── FIV / FeLV 検査結果 ──

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Lightbox from "@/components/Lightbox";
+import { coverFocusStyle } from "@/lib/supabase";
 
 // Gradient classes listed explicitly so Tailwind's scanner includes them
 const COLOR_THEMES: Record<string, { from: string; to: string }> = {
@@ -21,9 +22,19 @@ type Props = {
   catName: string;
   emoji: string;
   colorTheme: string;
+  // 保護主が指定したカバー写真の焦点。1枚目(カバー写真)にだけ効かせる。
+  coverFocusX: number | null;
+  coverFocusY: number | null;
 };
 
-export default function PhotoGallery({ images, catName, emoji, colorTheme }: Props) {
+export default function PhotoGallery({
+  images,
+  catName,
+  emoji,
+  colorTheme,
+  coverFocusX,
+  coverFocusY,
+}: Props) {
   const [current, setCurrent] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
@@ -33,6 +44,12 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
 
   // Clamp so the index never goes out of bounds if images array is shorter
   const idx = hasImages ? Math.min(current, images.length - 1) : 0;
+
+  // 焦点は1枚目(カバー写真)のサムネイルのみに効かせる。
+  // メインビューアは object-contain で写真全体を表示しており切り抜きが起きないため、
+  // object-position を指定すると余白の中で画像が寄るだけになるので適用しない。
+  // 2枚目以降のギャラリー画像も中央基準のまま。
+  const coverFocus = coverFocusStyle(coverFocusX, coverFocusY);
 
   return (
     <div className="w-full">
@@ -162,6 +179,7 @@ export default function PhotoGallery({ images, catName, emoji, colorTheme }: Pro
                 src={src}
                 alt={`${catName} ${i + 1}`}
                 className="object-cover"
+                style={i === 0 ? coverFocus : undefined}
                 sizes="96px"
               />
             </button>
