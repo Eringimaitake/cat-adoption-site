@@ -36,7 +36,8 @@ export default function PhotoGallery({
   coverFocusY,
 }: Props) {
   const [current, setCurrent] = useState(0);
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  // クリックされた写真から拡大表示を開始するため index を保持する (null = 閉じている)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const { from, to } = COLOR_THEMES[colorTheme] ?? COLOR_THEMES.orange;
   const hasImages = images.length > 0;
@@ -88,7 +89,7 @@ export default function PhotoGallery({
             <button
               type="button"
               className="absolute inset-0 z-[1] cursor-zoom-in"
-              onClick={() => setLightboxSrc(images[idx])}
+              onClick={() => setLightboxIndex(idx)}
               aria-label="写真を拡大表示"
             />
           </>
@@ -188,11 +189,12 @@ export default function PhotoGallery({
       )}
 
       {/* Lightbox overlay */}
-      {lightboxSrc && (
+      {lightboxIndex !== null && (
         <Lightbox
-          src={lightboxSrc}
+          images={images}
           alt={`${catName} の写真`}
-          onClose={() => setLightboxSrc(null)}
+          startIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
         />
       )}
     </div>

@@ -34,7 +34,7 @@ export default function EventImage({ src, alt }: Props) {
         </span>
       </button>
 
-      {open && <Lightbox src={src} alt={alt} onClose={() => setOpen(false)} />}
+      {open && <Lightbox images={[src]} alt={alt} onClose={() => setOpen(false)} />}
     </>
   );
 }
